@@ -1,0 +1,11 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/vendor/lightbox2/css/lightbox.css": "/css/vendor/lightbox2/css/lightbox.css",
+    "/css/vendor/lightbox2/images/close.png": "/css/vendor/lightbox2/images/close.png",
+    "/css/vendor/lightbox2/images/loading.gif": "/css/vendor/lightbox2/images/loading.gif",
+    "/css/vendor/lightbox2/images/next.png": "/css/vendor/lightbox2/images/next.png",
+    "/css/vendor/lightbox2/images/prev.png": "/css/vendor/lightbox2/images/prev.png",
+    "/css/vendor/filepond/filepond.min.css": "/css/vendor/filepond/filepond.min.css",
+    "/css/vendor/filepond-plugin-image-preview/filepond-plugin-image-preview.css": "/css/vendor/filepond-plugin-image-preview/filepond-plugin-image-preview.css"
+}
