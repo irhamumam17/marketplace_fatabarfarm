@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use App\Models\StoreInformation;
 use Illuminate\Http\Request;
 
-class CartController extends Controller
+class StoreInformationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CartController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\StoreInformation  $storeInformation
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show(StoreInformation $storeInformation)
     {
         //
     }
@@ -52,10 +52,10 @@ class CartController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\StoreInformation  $storeInformation
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cart $cart)
+    public function edit(StoreInformation $storeInformation)
     {
         //
     }
@@ -64,10 +64,10 @@ class CartController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\StoreInformation  $storeInformation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request, StoreInformation $storeInformation)
     {
         //
     }
@@ -75,18 +75,11 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\StoreInformation  $storeInformation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cart $cart)
+    public function destroy(StoreInformation $storeInformation)
     {
         //
-    }
-
-    public function user_cart(){
-        return view('user.cart');
-    }
-    public function user_delete_cart_product(){
-        return true;
     }
 }
