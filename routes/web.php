@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
@@ -27,12 +28,20 @@ use App\Http\Controllers\StoreInformationController;
 |
 */
 
-Route::get('/', function () {
-    return view('user.index');
-})->name('user.home');
+Route::get('/', [Controller::class,'index'])->name('user.home');
+Route::get('/produk',[ProductController::class,'user_product'])->name('user.product');
+Route::get('/produk/{id}',[ProductController::class,'user_product_detail'])->name('user.product_detail');
+Route::get('/kategori/{id}',[ProductController::class,'user_category'])->name('user.category');
+Route::get('/blogs',[PostController::class,'user_blog'])->name('user.blog');
+Route::get('/blog/{id}',[PostController::class,'user_blog_detail'])->name('user.blog_detail');
+Route::get('/sejarah',[StoreInformationController::class,'user_sejarah'])->name('user.history');
+Route::get('/visi-misi',[StoreInformationController::class,'user_visi_misi'])->name('user.visi_misi');
+Route::get('/lokasi',[StoreInformationController::class,'user_lokasi'])->name('user.location');
 Route::middleware(['guest'])->group(function () {
     Route::get('/login',[AuthController::class,'loginView'])->name('login_view');
-    Route::post('/login',[AuthController::class,'login'])->name('login');
+    Route::middleware(['throttle:login'])->group(function () {
+        Route::post('/login',[AuthController::class,'login'])->name('login');
+    });
     Route::get('/register',[AuthController::class,'registerView'])->name('register_view');
     Route::post('/register',[AuthController::class,'register'])->name('register');
     Route::get('/password/forgot',[AuthController::class,'forgotPasswordView'])->name('forgot_password_view');
@@ -43,26 +52,22 @@ Route::middleware(['guest'])->group(function () {
         Route::get('/{token}/reset-password',[EmailController::class,'resetPassword'])->name('reset_password');
     });
 });
-Route::middleware(['auth','verified','CheckRole:customer'])->group(function(){
-    Route::get('/cart',[CartController::class,'user_cart'])->name('user.cart');
-    Route::get('/produk',[ProductController::class,'user_product'])->name('user.product');
-    Route::get('/produk/{id}',[ProductController::class,'user_product_detail'])->name('user.product_detail');
-    Route::get('/kategori/{id}',[ProductController::class,'user_category'])->name('user.category');
-    Route::get('/blogs',[PostController::class,'user_blog'])->name('user.blog');
-    Route::get('/blog/{id}',[PostController::class,'user_blog_detail'])->name('user.blog_detail');
+Route::get('/verification/notice',[AuthController::class,'verification_notice'])->name('verification.notice');
+Route::middleware(['auth','verified','CheckRole:admin,customer'])->group(function(){
     Route::get('/transaksi',[TransactionController::class,'user_transaction'])->name('user.transaction');
+    Route::get('/mycart',[CartController::class,'user_cart'])->name('user.cart');
     Route::get('/transaksi/{id}',[TransactionController::class,'user_transaction_detail'])->name('user.transaction_detail');
-    Route::get('/profil',[UserController::class,'user_profil'])->name('user.profil');
-    Route::get('/sejarah',[StoreInformationController::class,'user_sejarah'])->name('user.history');
-    Route::get('/visi-misi',[StoreInformationController::class,'user_visi_misi'])->name('user.visi_misi');
-    Route::get('/lokasi',[StoreInformationController::class,'user_lokasi'])->name('user.location');
-    Route::get('/logout',[UserController::class,'user_logout'])->name('user.logout');
+    Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     Route::get('/cart/product/{id}/delete',[CartController::class,'user_delete_cart_product'])->name('user.delete_cart_product');
+    Route::get('/cart/product/delete',[CartController::class,'user_delete_all_cart_product'])->name('user.delete_all_cart_product');
+    Route::get('/profil',[UserController::class,'user_profil'])->name('user.profil');
+    Route::post('/profil/update',[UserController::class,'user_profil_update'])->name('user.profil.update');
+    Route::get('/pesanan/lacak',[UserController::class,'user_track_order_view'])->name('user.track_order.view');
+    Route::post('/pesanan/lacak',[UserController::class,'user_track_order'])->name('user.track_order');
 });
 Route::middleware(['auth', 'verified','CheckRole:admin'])->group(function () {
-    Route::get('/dashboard', function(){
-        return view('admin.index');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [UserController::class,'admin_dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard/get-data', [UserController::class,'getChartData'])->name('admin.dashboard.getdata');
     Route::get('users/admin', [UserController::class,'index_admin'])->name('admin.index');
     Route::get('users/admin/get', [UserController::class,'get_admin'])->name('admin.getdata');
     Route::get('users/customer', [UserController::class,'index_customer'])->name('customer.index');
@@ -72,7 +77,7 @@ Route::middleware(['auth', 'verified','CheckRole:admin'])->group(function () {
 
     Route::resource('bank', BankController::class);
     Route::get('bank/get', [BankController::class,'get_data'])->name('bank.getdata');
-    Route::resource('cart', CartController::class);
+    Route::resource('cart', CartController::class)->only(['index','create','edit','store','update','destroy']);
     Route::get('cart/get', [CartController::class,'get_data'])->name('cart.getdata');
     Route::resource('configuration', ConfigurationController::class);
     Route::get('configuration/ui', [ConfigurationController::class,'index_ui'])->name('config.ui');
@@ -85,7 +90,8 @@ Route::middleware(['auth', 'verified','CheckRole:admin'])->group(function () {
     Route::prefix('product')->name('product.')->group(function () {
         Route::resource('category', ProductCategoryController::class)->only(['index','create','edit','store','update','destroy']);
         Route::get('/category/get', [ProductCategoryController::class,'get_data'])->name('category.getdata');
-        Route::resource('varian', ProductVariantController::class)->only(['index','store','create','edit','update','destroy']);;
+        Route::resource('varian', ProductVariantController::class)->only(['index','store','create','edit','destroy']);;
+        Route::post('varian/{id}',[ProductVariantController::class,'update'])->name('varian.update');
         Route::get('get', [ProductController::class,'get_data'])->name('getdata');
         Route::get('/varian/get', [ProductVariantController::class,'get_data'])->name('varian.getdata');
         Route::get('pending',[TransactionController::class, 'index_pending'])->name('pending.index');

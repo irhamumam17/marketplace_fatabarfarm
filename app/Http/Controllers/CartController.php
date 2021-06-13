@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Kavist\RajaOngkir\Facades\RajaOngkir;
 
 class CartController extends Controller
 {
@@ -84,9 +86,15 @@ class CartController extends Controller
     }
 
     public function user_cart(){
-        return view('user.cart');
+        $cart = Cart::where('user_id',Auth::user()->uuid)->get();
+        return view('user.cart',['carts'=> $cart]);
     }
-    public function user_delete_cart_product(){
-        return true;
+    public function user_delete_cart_product($product_id){
+        Cart::where([['product_id',$product_id],['user_id',Auth::user()->uuid]])->delete();
+        return redirect()->route('user.cart');
+    }
+    public function user_delete_all_cart_product(){
+        Cart::where([['user_id',Auth::user()->uuid]])->delete();
+        return redirect()->route('user.cart');
     }
 }

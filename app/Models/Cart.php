@@ -12,11 +12,11 @@ class Cart extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'uuid', 'product_id', 'user_id', 'amount'
+        'uuid', 'product_varian_id', 'user_id', 'amount'
     ];
 
-    public function product(){
-        return $this->belongsTo(ProductVariant::class,'product_id','uuid');
+    public function product_variant(){
+        return $this->belongsTo(ProductVariant::class,'product_varian_id','uuid');
     }
     public function user(){
         return $this->belongsTo(User::class,'user_id','uuid');

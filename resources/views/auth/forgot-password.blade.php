@@ -1,47 +1,90 @@
-@extends('layouts.app')
+@extends('layouts.landing_template')
+
+@section('title')
+Fatabar Farm | Lupa Kata Sandi
+@endsection
+
+@section('css')
+@endsection
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Reset Password') }}</div>
+        <!--====== App Content ======-->
+        <div class="app-content">
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
+            <!--====== Section 1 ======-->
+            <div class="u-s-p-y-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="breadcrumb">
+                            <div class="breadcrumb__wrap">
+                                <ul class="breadcrumb__list">
+                                    <li class="has-separator">
+
+                                        <a href="{{ route('user.home') }}">Home</a></li>
+                                    <li class="is-marked">
+
+                                        <a href="{{ route('forgot_password_view')}}">Reset</a></li>
+                                </ul>
                             </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('password.email') }}">
-                            @csrf
-
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Send Password Reset Link') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!--====== End - Section 1 ======-->
+
+
+            <!--====== Section 2 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Intro ======-->
+                <div class="section__intro u-s-m-b-60">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="section__text-wrap">
+                                    <h1 class="section__heading u-c-secondary">LUPA KATA SANDI?</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Intro ======-->
+
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row row--center">
+                            <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                                <div class="l-f-o">
+                                    <div class="l-f-o__pad-box">
+                                        <h1 class="gl-h1">ATUR ULANG KATA SANDI</h1>
+
+                                        <span class="gl-text u-s-m-b-30">Masukkan email anda di form dibawah ini, kami akan mengirim link pengubahan kata sandi kepada anda.</span>
+                                        <form class="l-f-o__form" action="{{ route('forgot_password') }}" method="POST">
+                                            <div class="u-s-m-b-30">
+
+                                                <label class="gl-label" for="reset-email">E-MAIL *</label>
+
+                                                <input class="input-text input-text--primary-style" type="text" name="email" id="reset-email" placeholder="Enter E-mail"></div>
+                                            <div class="u-s-m-b-30">
+
+                                                <button class="btn btn--e-transparent-brand-b-2" type="submit">SUBMIT</button></div>
+                                            <div class="u-s-m-b-30">
+
+                                                <a class="gl-link" href="{{ route('login_view') }}">Back to Login</a></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
         </div>
-    </div>
-@endsection
+        <!--====== End - App Content ======-->
+ @endsection

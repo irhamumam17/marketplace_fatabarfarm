@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->uuid('user_id')->nullable(false);
             $table->uuid('bank_id')->nullable(false);
             $table->uuid('transfer_evidence')->nullable(false);
+            $table->text("ongkir");
             $table->integer("amount");
             $table->string("status");
             $table->timestamps();

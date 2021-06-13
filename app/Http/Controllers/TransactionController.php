@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -114,5 +117,18 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+    public function user_transaction(){
+        $data = (object)[
+            'n_keranjang' => Cart::where('user_id',Auth::user()->uuid)->count(),
+            'n_transaksi' => Transaction::where('status', '!=', 'success')->orWhere('status','!=','cancel')->count(),
+            'n_sukses_transaksi' => Transaction::where('status', 'success')->count(),
+            'n_batal_transaksi' => Transaction::where('status', 'cancel')->count(),
+            'transaksi' => Transaction::with('product_variant','product_variant.product')->where('user_id', Auth::user()->uuid)->get()
+        ];
+        return view('user.transaction',['data'=> $data]);
+    }
+    public function user_transaction_detail(){
+        return view('user.transaction-detail');
     }
 }

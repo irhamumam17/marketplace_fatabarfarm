@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductVariant;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -56,20 +57,20 @@ class ProductController extends Controller
             'image.*' => 'image|max:10000',
         ]);
         if($request->hasfile('image')) {
-            $images = [];
-            foreach($request->file('image') as $file)
-            {
-                $path = $file->store('uploads/images/products','public');
+            // $images = [];
+            // foreach($request->file('image') as $file)
+            // {
+                $path = $request->file('image')->store('uploads/images/products','public');
                 $file = File::create([
                     'path' => $path
                 ]);
-                array_push($images,$file->uuid);
-            }
+                // array_push($images,$file->uuid);
+            // }
             $product = Product::create([
                 'category_id' => $request->category_id,
                 'name' => $request->name,
                 'detail' => $request->detail,
-                'image' => json_encode($images)
+                'image' => $file->uuid
             ]);
             return redirect(route('product.index'));
         }
@@ -95,13 +96,8 @@ class ProductController extends Controller
     public function edit($uuid)
     {
         $category = ProductCategory::all();
-        $product = Product::with('category')->where('uuid',$uuid)->first();
-        $gambar = [];
-        foreach(json_decode($product->image) as $img){
-            $file = File::where('uuid',$img)->first();
-            array_push($gambar,$file->path);
-        }
-        return view('admin.product.edit',['data' => $product,'category' => $category,'gambar' => $gambar]);
+        $product = Product::with('category','file')->where('uuid',$uuid)->first();
+        return view('admin.product.edit',['data' => $product,'category' => $category]);
     }
 
     /**
@@ -121,24 +117,23 @@ class ProductController extends Controller
         ]);
         $input = $request->only('category_id','name','detail');
         if($request->hasFile('image')){
-            $images = [];
             $request->validate([
                 'image' => 'mimes:jpeg,jpg,png,gif|max:10000',
             ]);
-            foreach(json_decode($product->image) as $prod){
-                $file = File::where('uuid',$prod)->first();
+            // foreach(json_decode($product->image) as $prod){
+                $file = File::where('uuid',$product->image)->first();
                 Storage::disk('public')->delete($file->path);
-                File::where('uuid',$prod)->delete();
-            }
-            foreach($request->file('image') as $file)
-            {
-                $path = $file->store('uploads/images/products','public');
+                File::where('uuid',$product->image)->delete();
+            // }
+            // foreach($request->file('image') as $file)
+            // {
+                $path = $request->file('image')->store('uploads/images/products','public');
                 $file = File::create([
                     'path' => $path
                 ]);
-                array_push($images,$file->uuid);
-            }
-            $input['image'] = $images;
+                // array_push($images,$file->uuid);
+            // }
+            $input['image'] = $file->uuid;
         }
         try{
             $product->update($input);
@@ -182,5 +177,20 @@ class ProductController extends Controller
             $path = $file->store('uploads/images/products','public');
             return $path;
         }
+    }
+    public function user_product(){
+        $product = ProductVariant::with('product.category')->get();
+        return view('user.product',['product' => $product]);
+    }
+    public function user_product_detail(){
+        return view('user.product-detail');
+    }
+    public function user_category($category){
+        $product = ProductVariant::with('product.category')->whereHas('product',function($q) use ($category){
+                        $q->whereHas('category',function($r) use ($category){
+                            $r->where('id',$category);
+                        });
+                    })->get();
+        return view('user.product',['product' => $product]);
     }
 }

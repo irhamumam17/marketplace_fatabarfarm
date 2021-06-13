@@ -64,15 +64,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('product.index') }}" class="nav-link">
-                  <i class="fas fa-box nav-icon"></i>
-                  <p>Produk</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ route('product.category.index') }}" class="nav-link">
                   <i class="fas fa-boxes nav-icon"></i>
                   <p>Kategori</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product.index') }}" class="nav-link">
+                  <i class="fas fa-box nav-icon"></i>
+                  <p>Produk</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -106,6 +106,24 @@
               </li>
               <li class="nav-item">
                 <a href="{{ route('product.success.index') }}" class="nav-link">
+                  <i class="fas fa-spinner nav-icon"></i>
+                  <p>Konfirmasi Ongkir</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                  <i class="fas fa-spinner nav-icon"></i>
+                  <p>Packing</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                  <i class="fas fa-spinner nav-icon"></i>
+                  <p>Dikirim</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('product.cancel.index') }}" class="nav-link">
                   <i class="fas fa-check-circle nav-icon"></i>
                   <p>Sukses</p>
                 </a>
@@ -134,12 +152,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('config.fcm') }}" class="nav-link">
-                <i class="fas fa-tools nav-icon"></i>
-                <p>FCM</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="{{ route('config.pusher') }}" class="nav-link">
                 <i class="fas fa-tools nav-icon"></i>
                 <p>Pusher</p>
@@ -154,15 +166,35 @@
           </ul>
           <li class="nav-item">
             <a href="#" class="nav-link btnMenu">
-              <i class="nav-icon fas"></i>
+              <i class="nav-icon fas fa-info"></i>
               <p>
-                Profil
-              </p>
-            </a>
-          </li>
+                Informasi
+                <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="fas fa-history nav-icon"></i>
+                <p>Sejarah</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="fas fa-bullseye nav-icon"></i>
+                <p>Visi Misi</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <p>Lokasi</p>
+              </a>
+            </li>
+          </ul>
           <li class="nav-item">
             <a href="#" class="nav-link btnMenu">
-              <i class="nav-icon fas"></i>
+              <i class="nav-icon fas fa-newspaper"></i>
               <p>
                 Berita
               </p>

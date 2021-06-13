@@ -25,13 +25,12 @@ class ConfigurationSeeder extends Seeder
             ],
             [
                 'name' => 'smtp',
-                'content' => '{"email":"no-reply@fatabarfarm.id","sender_name":"Fatabar Farm","host":"in-v3.mailjet.com","port":"587 ","username":"3152800ecc1c525d01615d59854fe098","password":"87c6697299e7a5c689392fe08718b748
-","encryption":"ssl"}'
+                'content' => '{"email":"no-reply@fatabarfarm.id","sender_name":"Fatabar Farm","host":"smtp.mailtrap.io","port":"2525","username":"2091896772d8f4","password":"05145bee73face","encryption":"tls"}'
             ],
-            // [
-            //     'name' => 'smtp',
-            //     'content' => '{"email":"no-reply@fatabarfarm.id","sender_name":"Fatabar Farm","host":"smtp-relay.sendinblue.com","port":"587","username":"coklatbrown356@gmail.com","password":"xkMUBWcLrvIp4J2G","encryption":"tls"}'
-            // ],
+            [
+                'name' => 'rajaongkir',
+                'content' => '{"api_key":"4bf18df47cfe61ec806b01a7ec45da7d","package":"starter"}'
+            ]
         ]);
     }
 }

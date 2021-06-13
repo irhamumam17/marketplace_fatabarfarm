@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Sejarah
+Fatabar Farm | Lokasi
 @endsection
 @section('content')
         <!--====== App Content ======-->
@@ -17,10 +17,10 @@ Fatabar Farm | Sejarah
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="index.html">Home</a></li>
+                                        <a href="{{ route('user.home')}}">Home</a></li>
                                     <li class="is-marked">
 
-                                        <a href="about.html">About</a></li>
+                                        <a href="{{ route('user.location')}}">Lokasi</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -38,17 +38,8 @@ Fatabar Farm | Sejarah
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="about">
-                                    <div class="about__container">
-                                        <div class="about__info">
-                                            <h2 class="about__h2">Welcome to Reshop Store!</h2>
-                                            <div class="about__p-wrap">
-                                                <p class="about__p">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                            </div>
-
-                                            <a class="about__link btn--e-secondary" href="index.html" target="_blank">Shop Now</a>
-                                        </div>
-                                    </div>
+                                <div class="g-map">
+                                    <div id="map"></div>
                                 </div>
                             </div>
                         </div>
@@ -62,143 +53,45 @@ Fatabar Farm | Sejarah
             <!--====== Section 3 ======-->
             <div class="u-s-p-b-60">
 
-                <!--====== Section Intro ======-->
-                <div class="section__intro u-s-m-b-46">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary">Our Team Members</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--====== End - Section Intro ======-->
-
-
                 <!--====== Section Content ======-->
                 <div class="section__content">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
-                                <div class="team-member u-h-100">
-                                    <div class="team-member__wrap">
-                                        <div class="aspect aspect--bg-grey-fb aspect--square">
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="fas fa-phone-volume"></i></div>
 
-                                            <img class="aspect__img team-member__img" src="images/about/member-1.jpg" alt=""></div>
-                                        <div class="team-member__social-wrap">
-                                            <ul class="team-member__social-list">
-                                                <li>
+                                        <span class="contact-o__info-text-1">Kontak Kami</span>
 
-                                                    <a class="s-tw--bgcolor-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-fb--bgcolor-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-insta--bgcolor-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-linked--bgcolor-hover" href="#"><i class="fab fa-linkedin"></i></a></li>
-                                            </ul>
-                                        </div>
+                                        <span class="contact-o__info-text-2">+6289678152703</span>
                                     </div>
-                                    <div class="team-member__info">
-
-                                        <span class="team-member__name">Ahnan Bashri</span>
-
-                                        <span class="team-member__job-title">Manager</span></div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
-                                <div class="team-member u-h-100">
-                                    <div class="team-member__wrap">
-                                        <div class="aspect aspect--bg-grey-fb aspect--square">
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="fas fa-map-marker-alt"></i></div>
 
-                                            <img class="aspect__img team-member__img" src="images/about/member-2.jpg" alt=""></div>
-                                        <div class="team-member__social-wrap">
-                                            <ul class="team-member__social-list">
-                                                <li>
+                                        <span class="contact-o__info-text-1">Lokasi Kami</span>
 
-                                                    <a class="s-tw--bgcolor-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                                <li>
+                                        <span class="contact-o__info-text-2">Jalan Pattimura No. 54</span>
 
-                                                    <a class="s-fb--bgcolor-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-insta--bgcolor-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-linked--bgcolor-hover" href="#"><i class="fab fa-linkedin"></i></a></li>
-                                            </ul>
-                                        </div>
+                                        <span class="contact-o__info-text-2">Semarang, Jawa Tengah, Indonesia</span>
                                     </div>
-                                    <div class="team-member__info">
-
-                                        <span class="team-member__name">Joseph Min</span>
-
-                                        <span class="team-member__job-title">UI, Designer</span></div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
-                                <div class="team-member u-h-100">
-                                    <div class="team-member__wrap">
-                                        <div class="aspect aspect--bg-grey-fb aspect--square">
+                            <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                <div class="contact-o u-h-100">
+                                    <div class="contact-o__wrap">
+                                        <div class="contact-o__icon"><i class="far fa-clock"></i></div>
 
-                                            <img class="aspect__img team-member__img" src="images/about/member-3.jpg" alt=""></div>
-                                        <div class="team-member__social-wrap">
-                                            <ul class="team-member__social-list">
-                                                <li>
+                                        <span class="contact-o__info-text-1">Waktu Kerja</span>
 
-                                                    <a class="s-tw--bgcolor-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                                <li>
+                                        <span class="contact-o__info-text-2">Senin - Jumat</span>
 
-                                                    <a class="s-fb--bgcolor-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-insta--bgcolor-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-linked--bgcolor-hover" href="#"><i class="fab fa-linkedin"></i></a></li>
-                                            </ul>
-                                        </div>
+                                        <span class="contact-o__info-text-2">Pukul 07.00 - 17.00 WIB</span>
                                     </div>
-                                    <div class="team-member__info">
-
-                                        <span class="team-member__name">Mike Pipe</span>
-
-                                        <span class="team-member__job-title">App, Architect</span></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
-                                <div class="team-member u-h-100">
-                                    <div class="team-member__wrap">
-                                        <div class="aspect aspect--bg-grey-fb aspect--square">
-
-                                            <img class="aspect__img team-member__img" src="images/about/member-4.jpg" alt=""></div>
-                                        <div class="team-member__social-wrap">
-                                            <ul class="team-member__social-list">
-                                                <li>
-
-                                                    <a class="s-tw--bgcolor-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-fb--bgcolor-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-insta--bgcolor-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                                <li>
-
-                                                    <a class="s-linked--bgcolor-hover" href="#"><i class="fab fa-linkedin"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="team-member__info">
-
-                                        <span class="team-member__name">Klronr Jim</span>
-
-                                        <span class="team-member__job-title">Team Leader</span></div>
                                 </div>
                             </div>
                         </div>
@@ -207,99 +100,34 @@ Fatabar Farm | Sejarah
                 <!--====== End - Section Content ======-->
             </div>
             <!--====== End - Section 3 ======-->
-
-
-            <!--====== Section 4 ======-->
-            <div class="u-s-p-b-90 u-s-m-b-30">
-
-                <!--====== Section Intro ======-->
-                <div class="section__intro u-s-m-b-46">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary u-s-m-b-12">CLIENTS FEEDBACK</h1>
-
-                                    <span class="section__span u-c-silver">WHAT OUR CLIENTS SAY</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--====== End - Section Intro ======-->
-
-
-                <!--====== Section Content ======-->
-                <div class="section__content">
-                    <div class="container">
-
-                        <!--====== Testimonial Slider ======-->
-                        <div class="slider-fouc">
-                            <div class="owl-carousel" id="testimonial-slider">
-                                <div class="testimonial">
-                                    <div class="testimonial__img-wrap">
-
-                                        <img class="testimonial__img" src="images/about/test-1.jpg" alt=""></div>
-                                    <div class="testimonial__content-wrap">
-
-                                        <span class="testimonial__double-quote"><i class="fas fa-quote-right"></i></span>
-                                        <blockquote class="testimonial__block-quote">
-                                            <p>"Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean."</p>
-                                        </blockquote>
-
-                                        <span class="testimonial__author">John D. / DVNTR Inc.</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial">
-                                    <div class="testimonial__img-wrap">
-
-                                        <img class="testimonial__img" src="images/about/test-2.jpg" alt=""></div>
-                                    <div class="testimonial__content-wrap">
-
-                                        <span class="testimonial__double-quote"><i class="fas fa-quote-right"></i></span>
-                                        <blockquote class="testimonial__block-quote">
-                                            <p>"Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean."</p>
-                                        </blockquote>
-
-                                        <span class="testimonial__author">John D. / DVNTR Inc.</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial">
-                                    <div class="testimonial__img-wrap">
-
-                                        <img class="testimonial__img" src="images/about/test-3.jpg" alt=""></div>
-                                    <div class="testimonial__content-wrap">
-
-                                        <span class="testimonial__double-quote"><i class="fas fa-quote-right"></i></span>
-                                        <blockquote class="testimonial__block-quote">
-                                            <p>"Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean."</p>
-                                        </blockquote>
-
-                                        <span class="testimonial__author">John D. / DVNTR Inc.</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial">
-                                    <div class="testimonial__img-wrap">
-
-                                        <img class="testimonial__img" src="images/about/test-4.jpg" alt=""></div>
-                                    <div class="testimonial__content-wrap">
-
-                                        <span class="testimonial__double-quote"><i class="fas fa-quote-right"></i></span>
-                                        <blockquote class="testimonial__block-quote">
-                                            <p>"Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean."</p>
-                                        </blockquote>
-
-                                        <span class="testimonial__author">John D. / DVNTR Inc.</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--====== End - Testimonial Slider ======-->
-                    </div>
-                </div>
-                <!--====== End - Section Content ======-->
-            </div>
-            <!--====== End - Section 4 ======-->
         </div>
         <!--====== End - App Content ======-->
+@endsection
+@section('js')
+<script>
+    // When the window has finished loading create our google map below
+google.maps.event.addDomListener(window, 'load', init);
+
+function init() {
+    // Basic options for a simple Google Map
+    // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+    var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 12,
+        scrollwheel: false,
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng(37.393322, -122.023780),
+    };
+    // Get the HTML DOM element that will contain your map
+    // We are using a div with id="map" seen below in the <body>
+    var mapElement = document.getElementById('map');
+    // Create the Google Map using our element and options defined above
+    var map = new google.maps.Map(mapElement, mapOptions);
+    // Let's also add a marker while we're at it
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.393322, -122.023780),
+        map: map,
+    });
+}
+</script>
 @endsection

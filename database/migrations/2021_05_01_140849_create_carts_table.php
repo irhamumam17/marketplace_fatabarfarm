@@ -16,13 +16,13 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->index();
-            $table->uuid('product_id')->nullable(false);
+            $table->uuid('product_varian_id')->nullable(false);
             $table->uuid('user_id')->nullable(false);
             $table->integer("amount");
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign("product_id")->references('uuid')->on('product_variants')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign("product_varian_id")->references('uuid')->on('product_variants')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign("user_id")->references('uuid')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
 @section('title')
-    Produk Varian
+    Transaksi Pending
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{asset('template_assets/vendor/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -17,7 +17,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Varian Produk</h3>
+      <h3 class="card-title">Data Transaksi Pending</h3>
       <div class="float-right">
         <button class="btn btn-outline-success" @click="create()">Tambah Data</button>
         <button class="btn btn-outline-secondary" @click="refreshData()">Muat Ulang Data</button>
@@ -30,10 +30,11 @@
         <tr>
           <th>No.</th>
           <th>Nama Produk</th>
-          <th>Varian</th>
-          <th>Harga</th>
-          <th>Stok</th>
-          <th>Gambar</th>
+          <th>User</th>
+          <th>Bank</th>
+          <th>Bukti Transfer</th>
+          <th>Total Bayar</th>
+          <th>Status</th>
           <th>Aksi</th>
         </tr>
         </thead>
@@ -41,11 +42,7 @@
         <tr v-for="(item, index) in mainData" :key="index">
           <td>@{{ index+1 }}</td>
           <td>@{{ item.product.name == 'null' ? '' : item.product.name }}</td>
-          <td>
-              <div v-for="(item2,index2) in item.detail">
-                  @{{ item2.name+': '+item2.value }}
-              </div>
-          </td>
+          <td></td>
           <td>@{{ item.price == 'null' ? '' : item.price }}</td>
           <td>@{{ item.stock == 'null' ? '' : item.stock }}</td>
           <td><img class="profile" :src="url+'/storage/'+item.file.path" alt=""></td>
@@ -53,7 +50,7 @@
             <a :href="url+'/product/varian/'+item.uuid+'/edit'" class="text-success"
                 data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i
                     class="far fa-edit"></i></a>
-            <a href="javascript:void(0);" @click="deleteData(item.uuid)" class="text-danger"
+            <a href="javascript:void(0);" @click="deleteData(item.id)" class="text-danger"
                 data-toggle="tooltip" data-placement="top" data-original-title="Hapus"><i
                     class="far fa-trash-alt"></i></a>
             {{-- <a :href="url+'/product/'+item.uuid" class="text-secondary"
@@ -65,12 +62,13 @@
         <tfoot>
         <tr>
             <th>No.</th>
-            <th>Nama Produk</th>
-            <th>Varian</th>
-            <th>Harga</th>
-            <th>Stok</th>
-            <th>Gambar</th>
-            <th>Aksi</th>
+          <th>Nama Produk</th>
+          <th>User</th>
+          <th>Bank</th>
+          <th>Bukti Transfer</th>
+          <th>Total Bayar</th>
+          <th>Status</th>
+          <th>Aksi</th>
         </tr>
         </tfoot>
       </table>
@@ -182,7 +180,7 @@
                         Swal.showLoading();
                     }
                 });
-                axios.get("{{ route('product.varian.getdata') }}")
+                axios.get("{{ route('product.pending.getdata') }}")
                     .then(response => {
                         $('#example1').DataTable().destroy()
                         this.mainData = response.data.data

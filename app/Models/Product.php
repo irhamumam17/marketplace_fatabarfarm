@@ -20,7 +20,10 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class,'category_id');
     }
     public function variant(){
-        return $this->hasMany(ProductVariant::class,'product_id');
+        return $this->hasMany(ProductVariant::class,'product_id','uuid');
+    }
+    public function file(){
+        return $this->belongsTo(File::class,'image','uuid');
     }
     protected static function boot()
     {

@@ -69,6 +69,9 @@ Fatabar Farm | Masuk
                                         <h1 class="gl-h1">Masuk</h1>
 
                                         <span class="gl-text u-s-m-b-30">Jika anda sudah mempunyai akun, silahan masukkan data anda.</span>
+                                        @error('system')
+                                                <span class="gl-text u-s-m-b-30">{{ $message }}</span>
+                                        @enderror
                                         <form class="l-f-o__form" action="{{ route('login') }}" method="POST">
                                             @csrf
                                             <div class="u-s-m-b-30">
@@ -98,14 +101,14 @@ Fatabar Farm | Masuk
                                                     <button class="btn btn--e-transparent-brand-b-2" type="submit">Masuk</button></div>
                                                 <div class="u-s-m-b-30">
 
-                                                    <a class="gl-link" href="lost-password.html">Lupa Kata Sandi?</a></div>
+                                                    <a class="gl-link" href="{{ route('forgot_password_view') }}">Lupa Kata Sandi?</a></div>
                                             </div>
                                             <div class="u-s-m-b-30">
 
                                                 <!--====== Check Box ======-->
                                                 <div class="check-box">
 
-                                                    <input type="checkbox" id="remember-me">
+                                                    <input type="checkbox" name="remember" id="remember-me">
                                                     <div class="check-box__state check-box__state--primary">
 
                                                         <label class="check-box__label" for="remember-me">Remember Me</label></div>

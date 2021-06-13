@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
 @section('title')
-    Produk Varian
+    Keranjang
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{asset('template_assets/vendor/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -31,24 +31,24 @@
           <th>No.</th>
           <th>Nama Produk</th>
           <th>Varian</th>
-          <th>Harga</th>
-          <th>Stok</th>
-          <th>Gambar</th>
+          <th>Pengguna</th>
+          <th>Jumlah</th>
           <th>Aksi</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, index) in mainData" :key="index">
           <td>@{{ index+1 }}</td>
-          <td>@{{ item.product.name == 'null' ? '' : item.product.name }}</td>
           <td>
-              <div v-for="(item2,index2) in item.detail">
+                @{{ item.product_varian.product.name == null ? '' : item.product_varian.product.name }}
+            </td>
+          <td>
+              <div v-for="(item2,index2) in item.product_variant.detail">
                   @{{ item2.name+': '+item2.value }}
               </div>
           </td>
-          <td>@{{ item.price == 'null' ? '' : item.price }}</td>
-          <td>@{{ item.stock == 'null' ? '' : item.stock }}</td>
-          <td><img class="profile" :src="url+'/storage/'+item.file.path" alt=""></td>
+          <td>@{{ item.user.name == null ? '' : item.user.name }}</td>
+          <td>@{{ item.amount == null ? '' : item.amount }}</td>
           <td>
             <a :href="url+'/product/varian/'+item.uuid+'/edit'" class="text-success"
                 data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i
@@ -65,12 +65,11 @@
         <tfoot>
         <tr>
             <th>No.</th>
-            <th>Nama Produk</th>
-            <th>Varian</th>
-            <th>Harga</th>
-            <th>Stok</th>
-            <th>Gambar</th>
-            <th>Aksi</th>
+              <th>Nama Produk</th>
+              <th>Varian</th>
+              <th>Pengguna</th>
+              <th>Jumlah</th>
+              <th>Aksi</th>
         </tr>
         </tfoot>
       </table>
@@ -78,6 +77,67 @@
     <!-- /.card-body -->
   </div>
   <!-- /.card -->
+<!-- MODAL -->
+<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="modal">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title" v-show="!editMode" id="myLargeModalLabel">Tambah Data Keranjang</h4>
+                <h4 class="modal-title" v-show="editMode" id="myLargeModalLabel">Edit Data Keranjang</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <form @submit.prevent="editMode ? updateData() : storeData()" @keydown="form.onKeydown($event)" id="form">
+                <div class="modal-body mx-4">
+                    <div class="form-row">
+                        <label class="col-lg-2" for="Nama">Produk</label>
+                        <div class="form-group col-md-8">
+                            <select name="sel-product" id="product_id" class="form-control custom-select"
+                                {{-- :class="{ 'is-invalid': form.errors.has('tipe_user') }" --}} style="width: 100%" disabled>
+                                <option v-for="item in product" value="item.uuid">@{{ item.name }}</option>
+                            </select>
+                            <div v-if="form.errors.has('name')" v-html="form.errors.get('name')" ></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="col-lg-2" for="Email">Varian</label>
+                        <div class="form-group col-md-8">
+                            <input v-model="form.email" id="email" type="email" min=0 placeholder="Masukkan Email"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                            <div v-if="form.errors.has('email')" v-html="form.errors.get('email')" ></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="col-lg-2" for="member">Customer</label>
+                        <div class="form-group col-md-8">
+                            <select name="sel-tipeuser" id="role" class="form-control custom-select"
+                                {{-- :class="{ 'is-invalid': form.errors.has('tipe_user') }" --}} style="width: 100%" disabled>
+                                <option value="admin" selected>Admin</option>
+                            </select>
+                            <input type="hidden" v-model="form.role">
+                            <div v-if="form.errors.has('role')" v-html="form.errors.get('role')" ></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="col-lg-2" for="Password">Jumlah Barang</label>
+                        <div class="form-group col-md-8">
+                            <input v-model="form.amount" id="amount" type="number" min="0" 
+                                placeholder="Masukkan Jumlah Barang" class="form-control"
+                                :class="{ 'is-invalid': form.errors.has('amount') }">
+                            <div v-if="form.errors.has('amount')" v-html="form.errors.get('amount')" ></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+                    <button v-show="!editMode" type="submit" class="btn btn-primary">Simpan</button>
+                    <button v-show="editMode" type="submit" class="btn btn-success">Ubah</button>
+                </div>
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 @section('js')
 <script src="{{asset('template_assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>

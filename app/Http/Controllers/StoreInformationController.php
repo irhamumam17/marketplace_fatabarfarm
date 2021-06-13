@@ -82,4 +82,14 @@ class StoreInformationController extends Controller
     {
         //
     }
+
+    public function user_sejarah(){
+        return view('user.sejarah');
+    }
+    public function user_visi_misi(){
+        return view('user.visi-misi');
+    }
+    public function user_lokasi(){
+        return view('user.lokasi');
+    }
 }

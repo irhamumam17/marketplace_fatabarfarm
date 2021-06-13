@@ -21,6 +21,10 @@ class ProductVariant extends Model
     public function file(){
         return $this->belongsTo(File::class,'image','uuid');
     }
+    protected function getDetailAttribute($value)
+    {
+        return json_decode($value);
+    }
     protected static function boot()
     {
         parent::boot();

@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('category_id')->unsigned();
             $table->string("name");
             $table->text("image");
-            $table->string("detail");
+            $table->text("detail");
             $table->timestamps();
             $table->softDeletes();
 

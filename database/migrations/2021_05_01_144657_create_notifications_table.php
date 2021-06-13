@@ -16,9 +16,12 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string("device");
+            $table->uuid('user_id')->nullable(false);
             $table->string("title");
             $table->string("content");
             $table->timestamps();
+
+            $table->foreign("user_id")->references('uuid')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

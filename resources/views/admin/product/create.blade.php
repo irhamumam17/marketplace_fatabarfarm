@@ -54,7 +54,7 @@ Tambah Produk
                 <div class="form-row">
                     <label class="col-lg-2" for="detail">Detail</label>
                     <div class="form-group col-md-8">
-                        <textarea name="detail" v-model="form.detail" id="detail" type="text" placeholder="Masukkan Detail lapangan"
+                        <textarea name="detail" v-model="form.detail" id="detail" type="text" placeholder="Masukkan Detail Produk"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('detail') }"
                             required></textarea>
                         {{-- <div v-if="form.errors.has('detail')" v-html="form.errors.get('detail')"></div> --}}
@@ -67,15 +67,9 @@ Tambah Produk
                     <label class="col-lg-2" for="Profil">Gambar</label>
                     <div class="form-group col-md-8">
                         <div class="input-group">
-                            <input ref="file" accept="image/*"  type="file" name="image[]"
-                                placeholder="Tambah Gambar" class="form-control " required multiple>
-                            {{-- <div class="input-group-append">
-                                <a data-fancybox="" data-type="iframe"
-                                    data-src="/filemanager/dialog.php?type=1&field_id=gambar&relative_url=1">
-                                    <button type="button" class="btn btn-outline-secondary">Cari</button></a>
-                            </div> --}}
+                            <input ref="file" accept="image/*"  type="file" name="image"
+                                placeholder="Tambah Gambar" class="form-control " required>
                         </div>
-                        {{-- <div v-if="form.errors.has('image')" v-html="form.errors.get('image')"></div> --}}
                         @if ($errors->has('image'))
                             <span class="text-danger">{{ $errors->first('image') }}</span>
                         @endif

@@ -17,12 +17,8 @@ class CreateBanksTable extends Migration
             $table->id();
             $table->uuid('uuid')->index();
             $table->string("name");
-            $table->text("account number");
-            $table->uuid('logo')->nullable(false);
-            $table->integer("saldo");
+            $table->text("account number");            
             $table->timestamps();
-
-            $table->foreign("logo")->references('uuid')->on('files')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

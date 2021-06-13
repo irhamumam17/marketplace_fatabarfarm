@@ -82,4 +82,12 @@ class PostController extends Controller
     {
         //
     }
+
+    public function user_blog(){
+        $post = Post::orderBy('created_at','DESC')->get();
+        return view('user.blog', ['posts' => $post]);
+    }
+    public function user_blog_detail($id){
+        return view('user.blog-detail');
+    }
 }

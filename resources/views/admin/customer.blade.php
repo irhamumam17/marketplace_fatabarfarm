@@ -49,10 +49,10 @@
         <tbody>
         <tr v-for="(item, index) in mainData" :key="index">
           <td>@{{ index+1 }}</td>
-          <td><img class="profile" :src="url+'/storage/'+item.file.path" alt=""></td>
-          <td>@{{ item.name == 'null' ? '' : item.name }}</td>
-          <td>@{{ item.email == 'null' ? '' : item.email }}</td>
-          <td>@{{ item.address == 'null' ? '' : item.address }}</td>
+          <td><img class="profile" :src="url+'/storage/'+(item.file == null ? '' : item.file.path)" alt=""></td>
+          <td>@{{ item.name == null ? '' : item.name }}</td>
+          <td>@{{ item.email == null ? '' : item.email }}</td>
+          <td>@{{ item.address == null ? '' : item.address }}</td>
           <td>
             <a href="javascript:void(0);" @click="editModal(item)" class="text-success"
                 data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i
@@ -248,7 +248,7 @@
                 this.clearForm();
                 this.editMode = true;
                 this.form.fill(data)
-                this.preview = this.url+'/storage/'+data.file.path;
+                this.preview = data.file==null ? null : this.url+'/storage/'+data.file.path;
                 $('#address').val(data.address);
                 $('#modal').modal('show');
             },

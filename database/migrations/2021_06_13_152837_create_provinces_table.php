@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoreInformationTable extends Migration
+class CreateProvincesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateStoreInformationTable extends Migration
      */
     public function up()
     {
-        Schema::create('store_information', function (Blueprint $table) {
+        Schema::create('provinces', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->text('detail')->nullable();
+            $table->unsignedInteger('province_id');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateStoreInformationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store_information');
+        Schema::dropIfExists('provinces');
     }
 }

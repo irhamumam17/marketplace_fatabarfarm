@@ -72,22 +72,15 @@ Edit Produk
                 <div class="form-row">
                     <label class="col-lg-2" for="Profil">Gambar Lama</label>
                     <div class="col-lg-8">
-                        @foreach ($gambar as $g)
-                            <img class="profile" src="{{ asset('storage/'.$g) }}" alt="">
-                        @endforeach
+                        <img class="profile" src="{{ asset('storage/'.$data->file->path) }}" alt="" style="margin-bottom: 10px;">
                     </div>
                 </div>
                 <div class="form-row">
                     <label class="col-lg-2" for="Profil">Gambar Baru(Optional)</label>
                     <div class="form-group col-md-8">
                         <div class="input-group">
-                            <input ref="file" accept="image/*"  type="file" name="image[]"
-                                placeholder="Tambah Gambar" class="form-control " multiple>
-                            {{-- <div class="input-group-append">
-                                <a data-fancybox="" data-type="iframe"
-                                    data-src="/filemanager/dialog.php?type=1&field_id=gambar&relative_url=1">
-                                    <button type="button" class="btn btn-outline-secondary">Cari</button></a>
-                            </div> --}}
+                            <input ref="file" accept="image/*"  type="file" name="image"
+                                placeholder="Tambah Gambar" class="form-control ">
                         </div>
                         {{-- <div v-if="form.errors.has('image')" v-html="form.errors.get('image')"></div> --}}
                         @if ($errors->has('image'))
