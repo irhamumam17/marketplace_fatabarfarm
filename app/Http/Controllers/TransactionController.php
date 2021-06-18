@@ -31,6 +31,28 @@ class TransactionController extends Controller
             'message' => 'Sukses Mendapatkan Data Produk Varian'
         ]);
     }
+    public function index_packing(){
+        return view('admin.transaction.packing');
+    }
+    public function get_packing(){
+        $data = Transaction::with('user','product')->where('status','packing')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => 'Sukses Mendapatkan Data Produk Varian'
+        ]);
+    }
+    public function index_konfirmasi(){
+        return view('admin.transaction.konfirmasi');
+    }
+    public function get_konfirmasi(){
+        $data = Transaction::with('user','product')->where('status','konfirmasi')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => 'Sukses Mendapatkan Data Produk Varian'
+        ]);
+    }
     public function index_cancel(){
         return view('admin.transaction.cancel');
     }

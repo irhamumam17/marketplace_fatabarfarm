@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
 @section('title')
-    Keranjang
+    Produk
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{asset('template_assets/vendor/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -17,7 +17,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Data Keranjang User</h3>
+      <h3 class="card-title">Data Produk</h3>
       <div class="float-right">
         <button class="btn btn-outline-success" @click="create()">Tambah Data</button>
         <button class="btn btn-outline-secondary" @click="refreshData()">Muat Ulang Data</button>
@@ -29,32 +29,23 @@
         <thead>
         <tr>
           <th>No.</th>
-          <th>Nama Produk</th>
+          <th>Kategori</th>
+          <th>Nama</th>
           <th>Varian</th>
-          <th>Pengguna</th>
-          <th>Jumlah</th>
           <th>Aksi</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item, index) in mainData" :key="index">
           <td>@{{ index+1 }}</td>
+          <td>@{{ item.category.name == 'null' ? '' : item.category.name }}</td>
+          <td>@{{ item.name == 'null' ? '' : item.name }}</td>
+          <td>@{{ item.variant_count == 'null' ? '' : item.variant_count }}</td>
           <td>
-                @{{ item.product_variant.product.name == null ? '' : item.product_variant.product.name }}
-            </td>
-          <td>
-
-              <div v-for="(item2,index2) in item.product_variant.detail">
-                @{{ item2.name+': '+item2.value }}
-            </div>
-          </td>
-          <td>@{{ item.user.name == null ? '' : item.user.name }}</td>
-          <td>@{{ item.amount == null ? '' : item.amount }}</td>
-          <td>
-            <a :href="url+'/cart/'+item.uuid+'/edit'" class="text-success"
+            <a :href="url+'/product/'+item.uuid+'/edit'" class="text-success"
                 data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i
                     class="far fa-edit"></i></a>
-            <a href="javascript:void(0);" @click="deleteData(item.uuid)" class="text-danger"
+            <a href="javascript:void(0);" @click="deleteData(item.id)" class="text-danger"
                 data-toggle="tooltip" data-placement="top" data-original-title="Hapus"><i
                     class="far fa-trash-alt"></i></a>
             {{-- <a :href="url+'/product/'+item.uuid" class="text-secondary"
@@ -66,11 +57,10 @@
         <tfoot>
         <tr>
             <th>No.</th>
-              <th>Nama Produk</th>
-              <th>Varian</th>
-              <th>Pengguna</th>
-              <th>Jumlah</th>
-              <th>Aksi</th>
+            <th>Kategori</th>
+            <th>Nama</th>
+            <th>Varian</th>
+            <th>Aksi</th>
         </tr>
         </tfoot>
       </table>
@@ -78,18 +68,6 @@
     <!-- /.card-body -->
   </div>
   <!-- /.card -->
-<!-- MODAL -->
-<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" id="modal">
-        <div class="modal-content">
-            <div class="modal-header ">
-                <h4 class="modal-title" v-show="!editMode" id="myLargeModalLabel">Tambah Data Keranjang</h4>
-                <h4 class="modal-title" v-show="editMode" id="myLargeModalLabel">Edit Data Keranjang</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 @endsection
 @section('js')
 <script src="{{asset('template_assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
@@ -110,7 +88,6 @@
         el: '#app',
         data: {
           mainData: '',
-          editMode: false,
           url : window.location.origin,
           form : new Form({
               id: ''
@@ -133,11 +110,11 @@
             });
           },
           create(){
-            window.location.href = "{{ route('cart.create') }}";
+            window.location.href = "{{ route('product.create') }}";
         },
             deleteData(id) {
                 Swal.fire({
-                    title: 'Apakah Anda Yakin Menghapus Produk Keranjang Produk Ini?',
+                    title: 'Apakah Anda Yakin Menghapus Produk Ini?',
                     text: "Aksi Tidak Dapat Dikembalikan",
                     icon: 'warning',
                     showCancelButton: true,
@@ -155,13 +132,13 @@
                                 Swal.showLoading();
                             }
                         });
-                        url = "{{ route('cart.destroy', ':id') }}".replace(':id', id)
+                        url = "{{ route('product.destroy', ':id') }}".replace(':id', id)
                         this.form.delete(url)
                             .then(response => {
                                 if(response.data.success == true){
                                     Swal.fire(
                                         'Berhasil',
-                                        response.data.message,
+                                        'Produk Dihapus Dari Sistem.',
                                         'success'
                                     ).then((result) => {
                                         this.refreshData()
@@ -195,7 +172,7 @@
                         Swal.showLoading();
                     }
                 });
-                axios.get("{{ route('cart.getdata') }}")
+                axios.get("{{ route('product.getdata') }}")
                     .then(response => {
                         $('#example1').DataTable().destroy()
                         this.mainData = response.data.data

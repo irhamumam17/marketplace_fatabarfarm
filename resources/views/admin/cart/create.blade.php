@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
 @section('title')
-Tambah Varian Produk
+Tambah Keranjang
 @endsection
 @section('css')
 <!-- dropzonejs -->
@@ -16,91 +16,75 @@ Tambah Varian Produk
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Tambah Varian Produk</h3>
+        <h3 class="card-title">Tambah Keranjang</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        {{-- <form @submit.prevent="storeData()" @keydown="form.onKeydown($event)"> --}}
-        <form @submit.prevent="storeData()" @keydown="form.onKeydown($event)" id="form">
+        <form @submit.prevent="storeData()" @keydown="form.onKeydown($event)">
+        {{-- <form method="POST" action="{{ route('product.store') }}" enctype="multipart/form-data"> --}}
+            @csrf
             <div class="modal-body mx-4">
                 <div class="form-row">
-                    <label class="col-lg-2" for="category_id">Produk</label>
+                    <label class="col-lg-2" for="product_varian_id">Produk</label>
                     <div class="form-group col-md-8">
-                        <select v-model="form.product_id" name="product_id" style="width: 100%"
-                            id="product_id" class="form-control" required>
-                            @foreach ($product as $p)
-                                <option value="{{ $p->uuid }}">{{ $p->name }}</option>
-                            @endforeach
+                        <select v-model="form.product_varian_id" name="product_varian_id" style="width: 100%"
+                            id="product_varian_id" class="form-control" required>
+
+                            <option v-for="item in product_variants" :value="item.uuid">
+                                @{{ item.product.name+' - '+item.detail[0].value }}
+                                {{-- <div v-for="item2 in item.detail">
+                                    @{{ item2.value }}
+                                </div> --}}
+                            </option>
                         </select>
-                        <div v-if="form.errors.has('product_id')" v-html="form.errors.get('product_id')" ></div>
+                        @if ($errors->has('product_varian_id'))
+                            <span class="text-danger">{{ $errors->first('product_varian_id') }}</span>
+                        @endif
+                        {{-- <div v-if="form.errors.has('product_varian_id')" v-html="form.errors.get('product_varian_id')"></div> --}}
                     </div>
                 </div>
                 <div class="form-row">
-                    <label class="col-lg-2" for="gambar">Varian</label>
-                </div>
-                <div v-for="(item,index) in form.detail">
-                    <div class="form-row">
-                        <label class="col-lg-2" for="gambar"></label>
-                        <div class="input-group mb-3 col-md-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">Nama</span>
-                            </div>
-                            <input v-model="form.detail[index].name" :name="'detail.${index}.name'" :id="index+'name'" type="text"
-                                class="form-control"
-                                :class="{ 'is-invalid': form.errors.has('detail.'+index+'.name') }" placeholder='name' required>
-                            <div v-if="form.errors.has('detail.'+index+'.name')" v-html="form.errors.get('detail.'+index+'.name')" ></div>
-                        </div>
-                        <div class="input-group mb-3 col-md-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">Nilai</span>
-                            </div>
-                            <input v-model="form.detail[index].value" :name="'detail.${index}.value'" :id="index+'value'" type="text"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('detail.'+index+'.value') }" placeholder='value' required>
-                            <div v-if="form.errors.has('detail.'+index+'.value')" v-html="form.errors.get('detail.'+index+'.value')" ></div>
-                        </div>
-                        <div class="form-group col-md-2 ml-1">
-                            <button type="button" class="btn btn-success" @click="addItem()" v-if='!index'><i
-                                    class="fas fa-plus"></i></button>
-                            <button type="button" class="btn btn-secondary" @click="removeItem(index)"
-                                v-if="index"><i class="fas fa-minus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label class="col-lg-2" for="Profil">Gambar</label>
+                    <label class="col-lg-2" for="user_id">Customer</label>
                     <div class="form-group col-md-8">
-                        <div class="input-group">
-                            <input  accept="image/*"  type="file" name="image" @change="changeImage"
-                                placeholder="Tambah Gambar" class="form-control " required>
-                        </div>
-                        <div v-if="form.errors.has('image')" v-html="form.errors.get('image')"></div>
+                        <select v-model="form.user_id" name="user_id" style="width: 100%"
+                            id="user_id" class="form-control" required>
+
+                            <option v-for="item in users" :value="item.uuid">@{{ item.name }}</option>
+                        </select>
+                        @if ($errors->has('user_id'))
+                            <span class="text-danger">{{ $errors->first('user_id') }}</span>
+                        @endif
+                        {{-- <div v-if="form.errors.has('product_varian_id')" v-html="form.errors.get('product_varian_id')"></div> --}}
                     </div>
                 </div>
-                <div class="form-row" v-if="preview!=''">
-                    <label class="col-lg-2" for="Profil"></label>
-                    <div class="col-lg-8">
-                        <img class="profile" :src="preview" alt="" style="margin-bottom: 10px;" height='80px'>
-                    </div>
-                </div>
+
                 <div class="form-row">
-                    <label class="col-lg-2" for="price">Harga</label>
+                    <label class="col-lg-2" for="amount">Jumlah</label>
                     <div class="form-group col-md-8">
-                        <input v-model="form.price" id="price" price="price" type="number" placeholder="Input Harga" class="form-control"
-                            :class="{ 'is-invalid': form.errors.has('price') }" required>
-                        <div v-if="form.errors.has('price')" v-html="form.errors.get('price')" ></div>
+                        <input v-model="form.amount" id="amount" amount="amount" type="text" placeholder="Input Jumlah" class="form-control"
+                            :class="{ 'is-invalid': form.errors.has('amount') }" required>
+                        {{-- <div v-if="form.errors.has('detail')" v-html="form.errors.get('detail')"></div> --}}
+                        @if ($errors->has('amount'))
+                            <span class="text-danger">{{ $errors->first('amount') }}</span>
+                        @endif
                     </div>
                 </div>
+
                 <div class="form-row">
-                    <label class="col-lg-2" for="stock">Stok</label>
+                    <label class="col-lg-2" for="detail">Detail</label>
                     <div class="form-group col-md-8">
-                        <input v-model="form.stock" id="stock" stock="stock" type="number" placeholder="Input Stock" class="form-control"
-                            :class="{ 'is-invalid': form.errors.has('stock') }" required>
-                        <div v-if="form.errors.has('stock')" v-html="form.errors.get('stock')" ></div>
+                        <textarea name="detail" v-model="form.detail" id="detail" type="text" placeholder="Masukkan Detail Keranjang"
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('detail') }"
+                            required></textarea>
+                        {{-- <div v-if="form.errors.has('detail')" v-html="form.errors.get('detail')"></div> --}}
+                        @if ($errors->has('detail'))
+                            <span class="text-danger">{{ $errors->first('detail') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="{{route('product.varian.index')}}"><button type="button" class="btn btn-light">Batal</button></a>
+                <a href="{{route('product.index')}}"><button type="button" class="btn btn-light">Batal</button></a>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
@@ -110,99 +94,87 @@ Tambah Varian Produk
 
     @endsection
     @section('js')
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"
+    integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA=="
+    crossorigin="anonymous"></script> --}}
     <script src="{{ asset('template_assets/vendor/select2/js/select2.full.min.js')}}"></script>
+    {{-- <script src="{{asset('tinymce/tinymce.min.js')}}"></script> --}}
+    {{-- <script>
+        tinymce.init({
+                selector: "textarea",theme: "silver",width: 680,height: 300,
+                plugins: [
+                    "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                    "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
+                    "table contextmenu directionality emoticons paste textcolor responsivefilemanager code"
+            ],
+
+            toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
+            toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
+            image_advtab: true ,
+
+            external_filemanager_path:"/filemanager/",
+            filemanager_title:"Responsive Filemanager" ,
+            external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
+            });
+    </script> --}}
     <script>
         var imgUrl = "{{ asset('') }}";
-        var app = new Vue({
-            el: '#app',
-            data: {
-              mainData: '',
-              form: new Form({
-                    id: '',
-                    uuid: '',
-                    product_id: '',
-                    detail: [{
-                        name: '',
-                        value: ''
-                    }],
-                    price: '',
-                    stock: '',
-                    image: '',
-                }),
-                categories: '',
-                preview: '',
-            },
-            created(){
+    let app = new Vue({
+        el: '#app',
+        data: {
+          mainData: '',
+          form: new Form({
+                id: '',
+                uuid: '',
+                product_varian_id: '',
+                user_id: '',
+                amount: '',
+            }),
+            users: @json($users),
+            product_variants: @json($product_variants),
+        },
+        created(){
 
+        },
+        mounted(){
+            // this.refreshData();
+        },
+        methods: {
+            storeData(){
+                Swal.fire({
+                    title: 'Loading Data...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                this.form.post("{{ route('cart.store') }}")
+                .then((response) => {
+                    if(response.data.success == true){
+                        Swal.fire(
+                            'Berhasil',
+                            response.data.message,
+                            'success'
+                        ).then((result) => {
+                            window.location.href = "{{ route('cart.index') }}"
+                        });
+                    }else{
+                        Swal.fire(
+                            'Gagal',
+                            response.data.message,
+                            'error'
+                        )
+                    }
+                })
             },
-            mounted(){
-
+            userTrigger(){
+                this.form.user_id = $('#user_id').val()
             },
-            methods: {
-                addItem() {
-                    this.form.detail.push({
-                        name: '',
-                        value: ''
-                    });
-                },
-                removeItem(index) {
-                    this.form.detail.splice(index, 1);
-                },
-                async storeData(){
-                    Swal.fire({
-                        title: 'Loading Data...',
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    this.form.detail = JSON.stringify(this.form.detail);
-                     await this.form.post("{{ route('product.varian.store') }}").then(response => {
-                            if(response.data.success == true){
-                                Swal.fire(
-                                    'Sukses',
-                                    response.data.message,
-                                    'success'
-                                ).then((result) => {
-                                    window.location.href = "{{ route('product.varian.index') }}"
-                                })
-                            }else{
-                                Swal.fire(
-                                    'Gagal',
-                                    response.data.message,
-                                    'error'
-                                )
-                            }
-                        })
-                        .catch(e => {
-                            Swal.fire(
-                                'Gagal',
-                                "Operasi Gagal",
-                                'error'
-                            )
-                            e.response.status != 422 ? console.log(e) : '';
-                        })
-                },
-                changeImage(e){
-                  const file = e.target.files[0];
-                  this.preview = URL.createObjectURL(file);
-                  let gambar = e.target.files;
-                  if(gambar.length){
-                    this.form.image = gambar[0];
-                  }
-              },
-                getProduct(){
-                    axios.get("{{ route('product.category.getdata') }}")
-                        .then(response => {
-                            this.categories = response.data.data
-                        })
-                        .catch(error => {
-                            console.log(error)
-                            Swal.close()
-                        })
-                }
+            variantTrigger(){
+                this.form.product_varian_id = $('#product_varian_id').val()
             },
-        });
+        },
+    });
     </script>
     @endsection

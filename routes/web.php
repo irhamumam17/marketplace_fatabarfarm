@@ -97,6 +97,9 @@ Route::middleware(['auth', 'verified','CheckRole:admin'])->group(function () {
         Route::get('pending',[TransactionController::class, 'index_pending'])->name('pending.index');
         Route::get('success',[TransactionController::class, 'index_success'])->name('success.index');
         Route::get('cancel',[TransactionController::class, 'index_cancel'])->name('cancel.index');
+        Route::get('konfirmasi',[TransactionController::class, 'index_konfirmasi'])->name('konfirmasi.index');
+        Route::get('packing',[TransactionController::class, 'index_packing'])->name('packing.index');
+        Route::get('dikirim',[TransactionController::class, 'index_dikirim'])->name('dikirim.index');
         Route::get('pending/get',[TransactionController::class, 'get_pending'])->name('pending.getdata');
         Route::get('success/get',[TransactionController::class, 'get_success'])->name('success.getdata');
         Route::get('cancel/get',[TransactionController::class, 'get_cancel'])->name('cancel.getdata');

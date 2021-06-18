@@ -105,25 +105,25 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.success.index') }}" class="nav-link">
+                <a href="{{ route('product.konfirmasi.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Konfirmasi Ongkir</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                <a href="{{ route('product.packing.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Packing</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                <a href="{{ route('product.dikirim.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Dikirim</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                <a href="{{ route('product.success.index') }}" class="nav-link">
                   <i class="fas fa-check-circle nav-icon"></i>
                   <p>Sukses</p>
                 </a>

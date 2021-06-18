@@ -76,7 +76,7 @@
 
                                                     <span>Masuk</span></a></li>
                                             @endauth
-                                            
+
                                         </ul>
                                         <!--====== End - Dropdown ======-->
                                     </li>
@@ -154,6 +154,26 @@
                                     <li>
 
                                         <a href="{{ route('user.blog') }}">BERITA</a></li>
+                                        <li class="has-dropdown">
+
+                                            <a>PROGRAM<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+
+                                            <!--====== Dropdown ======-->
+
+                                            <span class="js-menu-toggle"></span>
+                                            <ul style="width:170px">
+                                                <li>
+                                                    <a href="{{ route('user.history') }}">Edufarm</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('user.visi_misi') }}">Sedekah Jum'at</a>
+                                                </li>
+                                                <li>
+
+                                                    <a href="{{ route('user.location') }}">Hafiz Qur'an</a></li>
+                                            </ul>
+                                            <!--====== End - Dropdown ======-->
+                                        </li>
                                 </ul>
                                 <!--====== End - List ======-->
                             </div>
@@ -196,3 +216,4 @@
             <!--====== End - Nav 2 ======-->
         </header>
         <!--====== End - Main Header ======
+
