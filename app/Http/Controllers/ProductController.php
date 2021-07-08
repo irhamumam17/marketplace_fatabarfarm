@@ -53,27 +53,13 @@ class ProductController extends Controller
             'category_id' => 'required',
             'name' => 'required|string',
             'detail' => 'required|string',
-            'image' => 'required',
-            'image.*' => 'image|max:10000',
         ]);
-        if($request->hasfile('image')) {
-            // $images = [];
-            // foreach($request->file('image') as $file)
-            // {
-                $path = $request->file('image')->store('uploads/images/products','public');
-                $file = File::create([
-                    'path' => $path
-                ]);
-                // array_push($images,$file->uuid);
-            // }
-            $product = Product::create([
-                'category_id' => $request->category_id,
-                'name' => $request->name,
-                'detail' => $request->detail,
-                'image' => $file->uuid
-            ]);
-            return redirect(route('product.index'));
-        }
+        $product = Product::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'detail' => $request->detail,
+        ]);
+        return redirect(route('product.index'));
     }
 
     /**
@@ -116,25 +102,6 @@ class ProductController extends Controller
             'detail' => 'required|string',
         ]);
         $input = $request->only('category_id','name','detail');
-        if($request->hasFile('image')){
-            $request->validate([
-                'image' => 'mimes:jpeg,jpg,png,gif|max:10000',
-            ]);
-            // foreach(json_decode($product->image) as $prod){
-                $file = File::where('uuid',$product->image)->first();
-                Storage::disk('public')->delete($file->path);
-                File::where('uuid',$product->image)->delete();
-            // }
-            // foreach($request->file('image') as $file)
-            // {
-                $path = $request->file('image')->store('uploads/images/products','public');
-                $file = File::create([
-                    'path' => $path
-                ]);
-                // array_push($images,$file->uuid);
-            // }
-            $input['image'] = $file->uuid;
-        }
         try{
             $product->update($input);
             return redirect(route('product.index'));
@@ -152,11 +119,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
-            foreach(json_decode($product->image) as $prod){
-                $file = File::where('uuid',$prod)->first();
-                Storage::disk('public')->delete($file->path);
-                File::where('uuid',$prod)->delete();
-            }
             $product->delete();
             return response()->json([
                 'success' => true,
@@ -169,13 +131,6 @@ class ProductController extends Controller
                 'data' => null,
                 'message' => $th->getMessage()
             ]);
-        }
-    }
-    public function upload_image(Request $request){
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $path = $file->store('uploads/images/products','public');
-            return $path;
         }
     }
     public function user_product(){
@@ -191,6 +146,15 @@ class ProductController extends Controller
                             $r->where('id',$category);
                         });
                     })->get();
-        return view('user.product',['product' => $product]);
+        return view('user.product',['product' => $product, 'category' => $category]);
+    }
+
+    public function user_category_cari(Request $request, $id){
+        $product = ProductVariant::with('product.category')->whereHas('product',function($q) use ($id, $request){
+                        $q->whereHas('category',function($r) use ($id){
+                            $r->where('id',$id);
+                        })->where('name', 'LIKE', '%'.$request->key.'%');
+                    })->orWhere('detail', 'LIKE', '%'.$request->key.'%')->get();
+        return view('user.product',['product' => $product, 'category' => $id, 'key' => $request->key]);
     }
 }

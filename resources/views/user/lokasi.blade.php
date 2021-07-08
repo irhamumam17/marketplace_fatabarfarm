@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Lokasi
+Lokasi
 @endsection
 @section('content')
         <!--====== App Content ======-->
@@ -64,7 +64,7 @@ Fatabar Farm | Lokasi
 
                                         <span class="contact-o__info-text-1">Kontak Kami</span>
 
-                                        <span class="contact-o__info-text-2">+6289678152703</span>
+                                        <span class="contact-o__info-text-2">{{$lokasi->detail->kontak}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -75,9 +75,7 @@ Fatabar Farm | Lokasi
 
                                         <span class="contact-o__info-text-1">Lokasi Kami</span>
 
-                                        <span class="contact-o__info-text-2">Jalan Pattimura No. 54</span>
-
-                                        <span class="contact-o__info-text-2">Semarang, Jawa Tengah, Indonesia</span>
+                                        <span class="contact-o__info-text-2">{!!$lokasi->detail->alamat!!}</span>
                                     </div>
                                 </div>
                             </div>
@@ -88,9 +86,9 @@ Fatabar Farm | Lokasi
 
                                         <span class="contact-o__info-text-1">Waktu Kerja</span>
 
-                                        <span class="contact-o__info-text-2">Senin - Jumat</span>
+                                        <span class="contact-o__info-text-2">{{ucfirst($lokasi->detail->waktu_kerja->hari_mulai)}} - {{ucfirst($lokasi->detail->waktu_kerja->hari_selesai)}}</span>
 
-                                        <span class="contact-o__info-text-2">Pukul 07.00 - 17.00 WIB</span>
+                                        <span class="contact-o__info-text-2">Pukul {{$lokasi->detail->waktu_kerja->waktu_mulai}} - {{$lokasi->detail->waktu_kerja->waktu_selesai}} WIB</span>
                                     </div>
                                 </div>
                             </div>
@@ -107,8 +105,8 @@ Fatabar Farm | Lokasi
 <script>
     // When the window has finished loading create our google map below
 google.maps.event.addDomListener(window, 'load', init);
-
 function init() {
+    var data = @json($lokasi);
     // Basic options for a simple Google Map
     // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
     var mapOptions = {
@@ -116,7 +114,7 @@ function init() {
         zoom: 12,
         scrollwheel: false,
         // The latitude and longitude to center the map (always required)
-        center: new google.maps.LatLng(37.393322, -122.023780),
+        center: new google.maps.LatLng(data.detail.longitude, data.detail.latitude),
     };
     // Get the HTML DOM element that will contain your map
     // We are using a div with id="map" seen below in the <body>
@@ -125,7 +123,7 @@ function init() {
     var map = new google.maps.Map(mapElement, mapOptions);
     // Let's also add a marker while we're at it
     var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(37.393322, -122.023780),
+        position: new google.maps.LatLng(data.detail.longitude, data.detail.latitude),
         map: map,
     });
 }

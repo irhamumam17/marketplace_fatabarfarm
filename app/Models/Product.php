@@ -13,7 +13,7 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'uuid', 'category_id', 'name', 'image', 'detail'
+        'uuid', 'category_id', 'name', 'detail'
     ];
 
     public function category(){
@@ -21,9 +21,6 @@ class Product extends Model
     }
     public function variant(){
         return $this->hasMany(ProductVariant::class,'product_id','uuid');
-    }
-    public function file(){
-        return $this->belongsTo(File::class,'image','uuid');
     }
     protected static function boot()
     {

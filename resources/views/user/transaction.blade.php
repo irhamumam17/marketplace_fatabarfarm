@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Transaksi Saya
+Transaksi Saya
 @endsection
 @section('content')
 
@@ -50,9 +50,9 @@ Fatabar Farm | Transaksi Saya
                                                 <li>
 
                                                     <a href="{{route('user.profil')}}">Profil</a></li>
-                                                <li>
+                                                {{-- <li>
 
-                                                    <a href="{{ route('user.track_order.view') }}">Lacak Pesanan</a></li>
+                                                    <a href="{{ route('user.track_order.view') }}">Lacak Pesanan</a></li> --}}
                                                 <li>
 
                                                     <a class="dash-active" href="{{ route('user.transaction') }}">Transaksi Saya</a></li>
@@ -67,7 +67,7 @@ Fatabar Farm | Transaksi Saya
 
                                                         <span class="dash__w-icon dash__w-icon-style-1"><i class="fas fa-cart-arrow-down"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_transaksi->n_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Diproses</span></div>
                                                 </li>
@@ -76,7 +76,7 @@ Fatabar Farm | Transaksi Saya
 
                                                         <span class="dash__w-icon dash__w-icon-style-2"><i class="fas fa-check-circle"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_sukses_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_transaksi->n_sukses_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Sukses</span></div>
                                                 </li>
@@ -85,7 +85,7 @@ Fatabar Farm | Transaksi Saya
 
                                                         <span class="dash__w-icon dash__w-icon-style-1"><i class="fas fa-times"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_batal_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_transaksi->n_batal_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Dibatalkan</span></div>
                                                 </li>
@@ -94,7 +94,7 @@ Fatabar Farm | Transaksi Saya
 
                                                         <span class="dash__w-icon dash__w-icon-style-3"><i class="far fa-heart"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_keranjang }}</span>
+                                                        <span class="dash__w-text">{{ $data_transaksi->n_keranjang }}</span>
 
                                                         <span class="dash__w-name">Keranjang</span></div>
                                                 </li>
@@ -110,7 +110,7 @@ Fatabar Farm | Transaksi Saya
 
                                             <span class="dash__text u-s-m-b-30">Disini anda dapat melihat semua transaksi yang pernah anda lakukan.</span>
                                             <div class="m-order__list">
-                                                @foreach($data->transaksi as $t)
+                                                @foreach($data_transaksi->transaksi as $t)
                                                 <div class="m-order__get">
                                                     <div class="manage-o__header u-s-m-b-30">
                                                         <div class="dash-l-r">
@@ -121,40 +121,50 @@ Fatabar Farm | Transaksi Saya
                                                             <div>
                                                                 <div class="dash__link dash__link--brand">
 
-                                                                    <a href="dash-manage-order.html">MANAGE</a></div>
+                                                                    <a href="{{ route('user.transaction_detail',$t->uuid) }}">DETAIL</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="manage-o__description">
+                                                    @foreach($t->product as $p)
+                                                    <div class="manage-o__description" style="margin-bottom: 20px;">
                                                         <div class="description__container">
                                                             <div class="description__img-wrap">
 
-                                                                <img class="u-img-fluid" src="{{ asset('') }}" alt=""></div>
-                                                            <div class="description-title">{{ $t->product->name }}</div>
+                                                                <img class="u-img-fluid" src="{{ asset('storage/'.$p->file->path) }}" alt="" style="max-height: 90px;"></div>
+                                                            <div class="description-title">
+                                                                {{ $p->product->name }}
+                                                                @foreach($p->detail as $d)
+                                                                {{ $d->name.' '.$d->value }}
+                                                                @endforeach
+                                                            </div>
                                                         </div>
                                                         <div class="description__info-wrap">
                                                             <div>
-                                                                @if($t->status == 'success')
-                                                                    <span class="manage-o__badge badge--shipped">Sukses</span></div>
-                                                                @elseif($t->status == 'cancel')
-                                                                    <span class="manage-o__badge badge--delivered">Proses</span></div>
+                                                                @if($t->status == 4)
+                                                                    <span class="manage-o__badge badge--shipped">Sukses</span>
+                                                                @elseif($t->status <= 3)
+                                                                    <span class="manage-o__badge badge--delivered">Proses</span>
                                                                 @else
-                                                                    <span class="manage-o__badge badge--processing">Dibatalkan</span></div>
+                                                                    <span class="manage-o__badge badge--processing">Dibatalkan</span>
                                                                 @endif
+                                                            </div>
                                                             <div>
 
                                                                 <span class="manage-o__text-2 u-c-silver">Quantity:
 
-                                                                    <span class="manage-o__text-2 u-c-secondary">{{ $t->amount }}</span></span></div>
+                                                                    <span class="manage-o__text-2 u-c-secondary">{{ $p->amount }}</span></span></div>
                                                             <div>
 
                                                                 <span class="manage-o__text-2 u-c-silver">Total:
 
-                                                                    <span class="manage-o__text-2 u-c-secondary">{{ "Rp " . number_format($t->amount*$t->product->price,2,',','.') }}</span></span></div>
+                                                                    <span class="manage-o__text-2 u-c-secondary">{{ "Rp " . number_format($p->amount*$p->price,2,',','.') }}</span>
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        @endforeach
                                                     </div>
+                                                    @endforeach
                                                 </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>

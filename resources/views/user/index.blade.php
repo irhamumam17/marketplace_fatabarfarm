@@ -1,10 +1,22 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm - Quality On Healthy
+Quality On Healthy
+@endsection
+@section('css')
+<style>
+    @media only screen and (max-width:  768px){
+        .primary-style-1 .hero-slide{
+            height: 200px;
+        }
+        .s-skeleton--h-600{
+            min-height:  200px;
+        }
+    }
+</style>
 @endsection
 @section('content')
 <!--====== Primary Slider ======-->
-<div class="s-skeleton s-skeleton--h-600 s-skeleton--bg-grey">
+<div class="s-skeleton s-skeleton--h-600 s-skeleton--bg-grey" >
     <div class="owl-carousel primary-style-1" id="hero-slider">
         <div class="hero-slide" style="background-image: url('{{ asset('landing_assets/images/dokumentasi/slider1.png') }}');">
             <div class="container">
@@ -83,7 +95,7 @@ Fatabar Farm - Quality On Healthy
                         <div class="filter__category-wrapper">
 
                             <button class="btn filter__btn filter__btn--style-1 js-checked" type="button" data-filter="*">ALL</button></div>
-                        @foreach($productCategory as $c)
+                        @foreach($data['productCategory'] as $c)
                         <div class="filter__category-wrapper">
                             <button class="btn filter__btn filter__btn--style-1" type="button" data-filter=".category{{$c->id}}">{{ $c->name }}</button></div>
                         @endforeach
@@ -102,17 +114,17 @@ Fatabar Farm - Quality On Healthy
                                             <ul class="product-o__action-list">
                                                 <li>
 
-                                                    <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+                                                    <a data-modal="modal" name="addCart" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart" data-id="{{ $p->uuid }}"><i class="fas fa-plus-circle"></i></a></li>
                                             </ul>
                                         </div>
                                     </div>
 
                                     <span class="product-o__category">
 
-                                        <a href="#">{{ $p->product->category->name }}</a>
+                                        <a href="{{ route('user.category',$p->product->category->id) }}">{{ $p->product->category->name }}</a>
                                     </span>
                                     <span class="product-o__name">
-                                        <a href="#">{{ $p->product->name }}</a>
+                                        <a href="{{ route('user.product_detail',$p->uuid) }}">{{ $p->product->name }}</a>
                                     </span>
                                         @foreach($p->detail as $d)
                                         <span class="product-o__category">
@@ -214,9 +226,9 @@ Fatabar Farm - Quality On Healthy
 
                             <!--====== Image Code ======-->
 
-                            <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="blog-detail.html">
+                            <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="{{ route('user.blog_detail',$post->uuid) }}">
 
-                                <img class="aspect__img" src="{{ asset('landing_assets/images/blog/post-2.jpg') }}" alt=""></a>
+                                <img class="aspect__img" src="{{ asset('storage/'.$post->file->path) }}" alt=""></a>
                             <!--====== End - Image Code ======-->
                         </div>
                         <div class="bp-mini__content">
@@ -228,7 +240,7 @@ Fatabar Farm - Quality On Healthy
 
                                         <a>
 
-                                            <span>$post->created_at</span>
+                                            <span>{{$post->created_at}}</span>
                                         </a>
                                     </span>
                                 </span>
@@ -236,7 +248,7 @@ Fatabar Farm - Quality On Healthy
                             </div>
                             <span class="bp-mini__h1">
 
-                                <a href="blog-detail.html">$post->titlw</a></span>
+                                <a href="blog-detail.html">{{$post->title}}</a></span>
                             {{-- <p class="bp-mini__p">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> --}}
                         </div>
                     </div>
@@ -248,4 +260,81 @@ Fatabar Farm - Quality On Healthy
     <!--====== End - Section Content ======-->
 </div>
 <!--====== End - Section 10 ======-->
+@endsection
+@section('js')
+<script>
+    $(document).ready(function(){
+        // Variable to hold request
+        var request;
+        // Bind to the submit event of our form
+        $("a[name=addCart").on('click',function(event){
+
+            // Prevent default posting of form - put here to work in case of errors
+            event.preventDefault();
+            let id = $(this).data('id');
+            Swal.fire({
+                    title: 'Loading Data...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            // Abort any pending request
+            if (request) {
+                request.abort();
+            }
+            // setup some local variables
+            var $form = $(this);
+
+            // Let's select and cache all the fields
+            var $inputs = $form.find("input,button");
+
+            // Let's disable the inputs for the duration of the Ajax request.
+            // Note: we disable elements AFTER the form data has been serialized.
+            // Disabled form elements will not be serialized.
+            $inputs.prop("disabled", true);
+            let product_varian_id = id;
+            let amount = "1";
+            $.ajax({
+                url: "{{ route('user.add_cart_product') }}",
+                type:"POST",
+                data:{
+                  product_varian_id:product_varian_id,
+                  amount:amount,
+                  "_token": "{{ csrf_token() }}",
+                },
+                success:function(response){
+                  if(response.success == true) {
+                    Swal.fire(
+                        'Sukses',
+                        response.message,
+                        'success'
+                    ).then((result) => {
+                        window.location.href = "{{ route('user.cart') }}"
+                    })
+                  }else{
+                    Swal.fire(
+                        'Gagal',
+                        response.message,
+                        'error'
+                        )
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    Swal.fire(
+                        'Gagal',
+                        textStatus,
+                        'error'
+                        )
+                    console("Status: " + textStatus);
+                    console("Error: " + errorThrown); 
+                },
+                always:function(){
+                    $inputs.prop("disabled", false);
+                }
+               });
+        });
+    });
+</script>
 @endsection

@@ -1,6 +1,15 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Profil
+Profil
+@endsection
+@section('css')
+<style>
+    .profile{
+        align-items: center;
+        max-width: 50px;
+        max-heigth: 50px;
+    }
+</style>
 @endsection
 @section('content')
 
@@ -50,9 +59,9 @@ Fatabar Farm | Profil
                                                 <li>
 
                                                     <a class="dash-active" href="{{route('user.profil')}}">Profil</a></li>
-                                                <li>
+                                                {{-- <li>
 
-                                                    <a href="{{route('user.track_order.view')}}">Lacak Pesanan</a></li>
+                                                    <a href="{{route('user.track_order.view')}}">Lacak Pesanan</a></li> --}}
                                                 <li>
 
                                                     <a href="{{route('user.transaction')}}">Transaksi Saya</a></li>
@@ -67,7 +76,7 @@ Fatabar Farm | Profil
 
                                                         <span class="dash__w-icon dash__w-icon-style-1"><i class="fas fa-cart-arrow-down"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_profil->n_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Diproses</span></div>
                                                 </li>
@@ -76,7 +85,7 @@ Fatabar Farm | Profil
 
                                                         <span class="dash__w-icon dash__w-icon-style-2"><i class="fas fa-check-circle"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_sukses_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_profil->n_sukses_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Sukses</span></div>
                                                 </li>
@@ -85,7 +94,7 @@ Fatabar Farm | Profil
 
                                                         <span class="dash__w-icon dash__w-icon-style-1"><i class="fas fa-times"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_batal_transaksi }}</span>
+                                                        <span class="dash__w-text">{{ $data_profil->n_batal_transaksi }}</span>
 
                                                         <span class="dash__w-name">Transaksi Dibatalkan</span></div>
                                                 </li>
@@ -94,7 +103,7 @@ Fatabar Farm | Profil
 
                                                         <span class="dash__w-icon dash__w-icon-style-3"><i class="far fa-heart"></i></span>
 
-                                                        <span class="dash__w-text">{{ $data->n_keranjang }}</span>
+                                                        <span class="dash__w-text">{{ $data_profil->n_keranjang }}</span>
 
                                                         <span class="dash__w-name">Keranjang</span></div>
                                                 </li>
@@ -140,6 +149,13 @@ Fatabar Farm | Profil
                                                                     <label for="c-subject"></label>
 
                                                                     <input class="input-text input-text--border-radius input-text--primary-style" type="file" id="c-subject" placeholder="Foto (Wajib)" required></div>
+                                                                @if(auth()->user()->image)
+                                                                <div class="u-s-m-b-30">
+                                                                    <label for="c-subject"></label>
+                                                                    <img class="profile" src="{{ asset('storage/'.auth()->user()->file->path) }}" alt="">
+                                                                </div>
+                                                                @endif
+
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 u-h-100">
                                                                 <div class="u-s-m-b-30">

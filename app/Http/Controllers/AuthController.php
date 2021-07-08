@@ -70,7 +70,19 @@ class AuthController extends Controller
     }
     public function forgotPassword(Request $request)
     {
-        return $request->all();
+        $request->validate([
+            'email' => ['required']
+        ]);
+        $user = User::where('email',$request->email)->first();
+        if($user != null){
+            $token = Token::create([
+                'user_id' => $user->uuid,
+                'type' => 'reset_password',
+                'content' => Str::random(100),
+                'validity_period' => Carbon::now()->addDays(1)
+            ]);
+            $email = Mail::to($user->email)->send(new MailRegisterConfirmation($user));
+        }
     }
     public function logout(){
         Auth::logout();

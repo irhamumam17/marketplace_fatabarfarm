@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->uuid('image')->nullable();
             $table->text('content');
+            $table->integer('viewer')->default(0);
             $table->text('status');
             $table->timestamps();
         });

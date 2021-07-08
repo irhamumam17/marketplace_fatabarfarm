@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Blog
+Blog
 @endsection
 @section('content')
 <!--====== App Content ======-->
@@ -18,9 +18,9 @@ Fatabar Farm | Blog
 
                                         <!--====== Image Code ======-->
 
-                                        <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="blog-detail.html">
+                                        <a class="aspect aspect--bg-grey aspect--1366-768 u-d-block" href="{{ route('user.blog_detail',$post->uuid) }}">
 
-                                            <img class="aspect__img" src="{{ asset('landing_assets/images/blog/post-2.jpg')}}" alt=""></a>
+                                            <img class="aspect__img" src="{{ asset('storage/'.$post->file->path) }}" alt=""></a>
                                         <!--====== End - Image Code ======-->
                                     </div>
                                     <div class="bp-mini__content">
@@ -30,7 +30,7 @@ Fatabar Farm | Blog
 
                                                 <span class="bp-mini__publish-date">
 
-                                                    <a href="blog-masonry.html">
+                                                    <a href="javascript:void(0)">
 
                                                         <span>{{$post->created_at}}</span></a></span></span>
 
@@ -45,7 +45,7 @@ Fatabar Farm | Blog
 
                                         <span class="bp-mini__h1">
 
-                                            <a href="blog-detail.html">{{$post->title}}</a></span>
+                                            <a href="{{ route('user.blog_detail',$post->uuid) }}">{{$post->title}}</a></span>
                                         {{-- <p class="bp-mini__p">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> --}}
                                     </div>
                                 </div>

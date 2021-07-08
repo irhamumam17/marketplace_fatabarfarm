@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->uuid('uuid')->index();
             $table->bigInteger('category_id')->unsigned();
             $table->string("name");
-            $table->text("image");
             $table->text("detail");
             $table->timestamps();
             $table->softDeletes();

@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm - Quality On Healthy
+Detail Blog
 @endsection
 @section('content')
         <!--====== App Content ======-->
@@ -17,7 +17,7 @@ Fatabar Farm - Quality On Healthy
                             <!--====== Image Code ======-->
                             <div class="aspect aspect--bg-grey aspect--1366-768">
 
-                                <img class="aspect__img" src="images/blog/post-12.jpg" alt=""></div>
+                                <img class="aspect__img" src="{{ asset('storage/'.$post->file->path) }}" alt=""></div>
                             <!--====== End - Image Code ======-->
                         </div>
                         <div class="bp-detail__info-wrap">
@@ -27,17 +27,17 @@ Fatabar Farm - Quality On Healthy
 
                                     <span class="bp-detail__publish-date">
 
-                                        <a href="blog-right-sidebar.html">
+                                        <a href="javascript:void(0)">
 
-                                            <span>25 March 2018</span></a></span></span>
+                                            <span>{{$post->created_at}}</span></a></span></span>
 
                                 <span class="bp-detail__stat-wrap">
 
                                     <span class="bp-detail__author">
 
-                                        <a href="blog-right-sidebar.html">Dayle</a></span></span>
+                                        <a href="javascript:void(0)">Admin</a></span></span>
 
-                                <span class="bp-detail__stat-wrap">
+                                {{-- <span class="bp-detail__stat-wrap">
 
                                     <span class="bp-detail__category">
 
@@ -45,27 +45,23 @@ Fatabar Farm - Quality On Healthy
 
                                         <a href="blog-right-sidebar.html">News</a>
 
-                                        <a href="blog-right-sidebar.html">Health</a></span></span></div>
+                                        <a href="blog-right-sidebar.html">Health</a>
+                                    </span>
+                                    </span>
+                                    </div> --}}
 
                             <span class="bp-detail__h1">
 
-                                <a href="blog-detail.html">Wait till its open</a></span>
-                            <div class="blog-t-w">
+                                <a href="javascript:void(0)">{{$post->title}}</a></span>
+                            {{-- <div class="blog-t-w">
 
                                 <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">Travel</a>
 
                                 <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">Culture</a>
 
-                                <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">Place</a></div>
-                            <p class="bp-detail__p">Lorem Ipsum is simply dummy text of the <em>printing</em> and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-
-                                <a href="#">printer </a>took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                            <p class="bp-detail__p">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using <del>Lorem Ipsum</del> is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                            <blockquote class="bp-detail__q"><i class="fas fa-quote-left"></i>
-
-                                <span class="bp-detail__q-title">It’s Easier to Fool People Than to Convince Them That They Have Been Fooled.</span><cite class="bp-detail__q-citation">— MARK TWAIN</cite></blockquote>
-                            <p class="bp-detail__p">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                            <div class="post-center-wrap">
+                                <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">Place</a></div> --}}
+                            <p class="bp-detail__p">{!! $post->content !!}</p>
+                            {{-- <div class="post-center-wrap">
                                 <ul class="bp-detail__social-list">
                                     <li>
 
@@ -83,21 +79,21 @@ Fatabar Farm - Quality On Healthy
 
                                         <a class="s-gplus--color" href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                 </ul>
-                            </div>
-                            <div class="gl-l-r bp-detail__postnp">
+                            </div> --}}
+                            {{-- <div class="gl-l-r bp-detail__postnp">
                                 <div>
 
                                     <a href="blog-detail.html">Previous Post</a></div>
                                 <div>
 
                                     <a href="blog-detail.html">Next Post</a></div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
             <!--====== End - Detail Post ======-->
-            <div class="u-s-p-b-60">
+            {{-- <div class="u-s-p-b-60">
                 <div class="d-meta">
                     <div class="container">
                         <div class="row">
@@ -297,7 +293,7 @@ Fatabar Farm - Quality On Healthy
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <!--====== End - Section 1 ======-->
         </div>

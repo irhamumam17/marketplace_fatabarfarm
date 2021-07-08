@@ -183,4 +183,9 @@ class ProductVariantController extends Controller
             'message' => 'Sukses Mendapatkan Data Produk Varian'
         ]);
     }
+    public function user_product_detail($id){
+        $productVariant = ProductVariant::with('product.category')->where('uuid',$id)->first();
+        return view('user.product-detail',compact('productVariant'));
+    }
+
 }

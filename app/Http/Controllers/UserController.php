@@ -205,13 +205,13 @@ class UserController extends Controller
         ]);
     }
     public function user_profil(){
-        $data = (object)[
+        $data_profil = (object)[
             'n_keranjang' => Cart::where('user_id',Auth::user()->uuid)->count(),
             'n_transaksi' => Transaction::where('status', '!=', 'success')->orWhere('status','!=','cancel')->count(),
             'n_sukses_transaksi' => Transaction::where('status', 'success')->count(),
             'n_batal_transaksi' => Transaction::where('status', 'cancel')->count()
         ];
-        return view('user.profil',['data' => $data]);
+        return view('user.profil',['data_profil' => $data_profil]);
     }
     public function admin_dashboard(){
         $n_users = User::where('role','customer')->count();

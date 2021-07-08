@@ -1,106 +1,218 @@
 @extends('admin.layouts.template')
 @section('title')
-Edit Produk
+Edit Transaksi
 @endsection
 @section('css')
-<!-- dropzonejs -->
-<link rel="stylesheet" href="{{asset('template_assets/vendor/dropzone/min/dropzone.min.css')}}">
-<link rel="stylesheet" href="{{ asset('template_assets/vendor/select2/css/select2.min.css')}}">
-{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
-            integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw=="
-            crossorigin="anonymous" /> --}}
 <style>
-.profile{
-        align-items: center;
-        max-width: 100px;
-        max-heigth: 100px;
-    }
+
 </style>
 @endsection
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Edit Produk</h3>
+        <h3 class="card-title">Edit Transaksi</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
         {{-- <form @submit.prevent="storeData()" @keydown="form.onKeydown($event)"> --}}
-        <form method="POST" action="{{ route('product.update',$data->uuid) }}" enctype="multipart/form-data">
-            @csrf
-            {{ method_field('PUT') }}
-            <div class="modal-body mx-4">
-                <div class="form-row">
-                    <label class="col-lg-2" for="category_id">Kategori</label>
-                    <div class="form-group col-md-8">
-                        <select  name="category_id" style="width: 100%"
-                            id="category_id" class="form-control" required>
-                            @foreach ($category as $cat)
-                                <option value="{{ $cat->id }}" {{ $data->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('category_id'))
-                            <span class="text-danger">{{ $errors->first('category_id') }}</span>
-                        @endif
-                        {{-- <div v-if="form.errors.has('category_id')" v-html="form.errors.get('category_id')"></div> --}}
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <label class="col-lg-2" for="name">Nama</label>
-                    <div class="form-group col-md-8">
-                        <input id="name" name="name" type="text" placeholder="Input Nama" class="form-control" value="{{ $data->name }}"
-                            :class="{ 'is-invalid': form.errors.has('name') }" required>
-                        {{-- <div v-if="form.errors.has('detail')" v-html="form.errors.get('detail')"></div> --}}
-                        @if ($errors->has('name'))
-                            <span class="text-danger">{{ $errors->first('name') }}</span>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <label class="col-lg-2" for="detail">Detail</label>
-                    <div class="form-group col-md-8">
-                        <textarea name="detail" id="detail" type="text" placeholder="Masukkan Detail lapangan"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('detail') }"
-                            required>{{ $data->detail }}</textarea>
-                        {{-- <div v-if="form.errors.has('detail')" v-html="form.errors.get('detail')"></div> --}}
-                        @if ($errors->has('detail'))
-                            <span class="text-danger">{{ $errors->first('detail') }}</span>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label class="col-lg-2" for="Profil">Gambar Lama</label>
-                    <div class="col-lg-8">
-                        @foreach ($gambar as $g)
-                            <img class="profile" src="{{ asset('storage/'.$g) }}" alt="">
-                        @endforeach
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label class="col-lg-2" for="Profil">Gambar Baru(Optional)</label>
-                    <div class="form-group col-md-8">
-                        <div class="input-group">
-                            <input ref="file" accept="image/*"  type="file" name="image[]"
-                                placeholder="Tambah Gambar" class="form-control " multiple>
-                            {{-- <div class="input-group-append">
-                                <a data-fancybox="" data-type="iframe"
-                                    data-src="/filemanager/dialog.php?type=1&field_id=gambar&relative_url=1">
-                                    <button type="button" class="btn btn-outline-secondary">Cari</button></a>
-                            </div> --}}
+        <form @submit.prevent="updateData()" @keydown="form.onKeydown($event)" id="form">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Produk</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                    <div v-for="(item,index) in form.product">
+                    <!-- row -->
+                        <label>Produk @{{ index+1 }}</label>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                              <select class="form-control" v-model="item.product_id" name="product_id" :id="index" style="width: 100%;">
+                                <option v-for="(item, index) in product_variants" :value="item.uuid">
+                                    @{{ item.product.name }}
+                                    <template v-for="(item2, index) in item.detail">
+                                        @{{ item2.value }}
+                                    </template>
+                                </option>
+                              </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="number" max="10" min="1" v-model="item.amount" class="form-control" id="amount" placeholder="Jumlah" required>
+                            </div>
+                          <div class="form-group col-md-2">
+                            <button type="button" class="btn btn-success" @click="addItem(index)" v-if='!index'><i
+                                    class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-secondary" @click="removeItem(index)"
+                                v-if="index"><i class="fas fa-minus"></i></button>
+                          </div>
                         </div>
-                        {{-- <div v-if="form.errors.has('image')" v-html="form.errors.get('image')"></div> --}}
-                        @if ($errors->has('image'))
-                            <span class="text-danger">{{ $errors->first('image') }}</span>
-                        @endif
                     </div>
+                    <!-- row -->
                 </div>
-
+                <!-- /.card-body -->
             </div>
-            <div class="modal-footer">
-                <a href="{{route('product.index')}}"><button type="button" class="btn btn-light">Batal</button></a>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Pengguna</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Nama</label>
+                    <select class="form-control" v-model="form.user_id" :id="'user_id'" style="width: 100%;" required>
+                        <option></option>
+                        <option v-for="(item, index) in users" :value="item.uuid">
+                            @{{ item.name }}
+                        </option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Atas Nama</label>
+                    <input type="text" class="form-control" id="atas_nama" v-model="form.atas_nama" placeholder="Masukkan Atas Nama" required>
+                  </div>
+                  <div class="form-group">
+                    <label>No HP</label>
+                    <input type="text" class="form-control" id="nohp" v-model="form.nohp" placeholder="Masukkan No. HP" required>
+                  </div>
+                </div>
+                <!-- /.card-body -->
             </div>
+            <div class="card card-danger">
+              <div class="card-header">
+                <h3 class="card-title">Alamat Pengiriman</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Provinsi</label>
+                    <select class="form-control" v-model="form.province_id" :id="'province_id'" style="width: 100%;" required>
+                        <option></option>
+                        <option v-for="(item, index) in provinces" :value="item.province_id">
+                            @{{ item.name }}
+                        </option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Kota</label>
+                    <select class="form-control" v-model="form.city_id" :id="'city_id'" style="width: 100%;" required>
+                        <option></option>
+                        <option v-for="(item, index) in cities" :value="item.city_id">
+                            @{{ item.name }}
+                        </option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Alamat</label>
+                    <textarea class="form-control" name="alamat" id="alamat" rows="3" v-model="form.alamat" placeholder="Masukkan Alamat" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Kode Pos</label>
+                    <input type="text" class="form-control" v-model="form.kodepos" placeholder="Masukkan Kode Pos" required>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">Pengiriman</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Kurir</label>
+                    <select class="form-control" v-model="form.kurir" :id="'kurir'" style="width: 100%;" required>
+                        <option></option>
+                        <option value="jne">JNE</option>
+                        <option value="tiki">TIKI</option>
+                        <option value="pos">POS</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Berat Barang</label>
+                    <input type="number" id="berat" class="form-control" v-model="form.berat" placeholder="Masukkan Berat Barang(Gram)" required>
+                    <br>
+                            <button type="button" @click="countOngkir" class="btn btn-info btn-flat">Hitung</button>
+                  </div>
+                  <div class="form-group">
+                    <label>Ongkos Kirim</label>
+                      <select class="form-control" v-model="form.ongkir" :id="'ongkir'" style="width: 100%;" required>
+                        <option></option>
+                        <template v-for="(item, index) in costs">
+                            <option v-for="(item2, index) in item.cost" :value="item.service">
+                                @{{ item.description+' | '+item2.etd+' Hari'+' : '+item2.value }}
+                            </option>
+                        </template>
+                      </select>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Pembayaran</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Bank</label>
+                      <select class="form-control" v-model="form.bank_id" :id="'bank_id'" style="width: 100%;" required>
+                          <option></option>
+                          <option v-for="(item, index) in banks" :value="item.uuid">
+                              @{{ item.name }}
+                          </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputFile">Bukti Pembayaran</label>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" @change="imageTrigger" id="transfer_evidence" class="custom-file-input" id="exampleInputFile">
+                          <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        </div>
+                      </div>
+                      <a v-if="preview != null" :href="preview" v-bind:data-lightbox="form.id" v-bind:data-title="'transaksi'+form.uuid">
+                          <img :src="preview" v-bind:alt="'transaksi'+form.uuid" style="width: 7rem; border-radius: 6px; margin-top: 10px;">
+                      </a>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+              </div>
+            <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">Summary</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Catatan</label>
+                    <textarea class="form-control" name="note" id="note" rows="3" v-model="form.note" placeholder="Masukkan Catatan" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" v-model="form.status" :id="'status'" style="width: 100%;" required>
+                        <option></option>
+                        <option value="0">Pending</option>
+                        <option value="1">Konfirmasi Ongkir</option>
+                        <option value="2">Packing</option>
+                        <option value="3">Dikirim</option>
+                        <option value="4">Sukses</option>
+                        <option value="5">Batal</option>
+                      </select>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-danger" onclick="window.history.go(-1); return false;">Batal</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <!-- /.card -->
         </form>
         <!-- /.card-body -->
     </div>
@@ -108,52 +220,204 @@ Edit Produk
 
     @endsection
     @section('js')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"
-    integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA=="
-    crossorigin="anonymous"></script> --}}
-    <script src="{{ asset('template_assets/vendor/select2/js/select2.full.min.js')}}"></script>
-    {{-- <script src="{{asset('tinymce/tinymce.min.js')}}"></script> --}}
-    {{-- <script>
-        tinymce.init({
-                selector: "textarea",theme: "silver",width: 680,height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-                    "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
-                    "table contextmenu directionality emoticons paste textcolor responsivefilemanager code"
-            ],
-
-            toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-            toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
-            image_advtab: true ,
-
-            external_filemanager_path:"/filemanager/",
-            filemanager_title:"Responsive Filemanager" ,
-            external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
-            });
-    </script> --}}
     <script>
+        $(document).ready(function(){
+            $("select#province_id").on('change',function(e){
+                app.selectProvince();
+            });
+            $("select#city_id").on('change',function(e){
+                app.selectCity();
+            });
+            $("select#user_id").on('change',function(e){
+                app.selectUser();
+            });
+            $("select#bank_id").on('change',function(e){
+                app.selectBank();
+            });
+            $("select#kurir").on('change',function(e){
+                app.selectKurir();
+            });
+            $("#berat").on('change',function(e){
+                app.changeBerat();
+            });
+            $("#ongkir").on('change',function(e){
+                app.changeOngkir();
+            });
+            $("#status").on('change',function(e){
+                app.changeStatus();
+            });
+            // $("#0").on('change',function(e){
+            //     app.selectProduct($(this).attr('id'));
+            // });
+        });
         var imgUrl = "{{ asset('') }}";
+        var data = @JSON($transaction);
     let app = new Vue({
         el: '#app',
         data: {
           mainData: '',
+          url : window.location.origin,
           form: new Form({
-                id: '',
-                name: '',
-                category_id: '',
-                detail: '',
-                image: [],
+                id: data.id,
+                uuid: data.uuid,
+                product: data.product,
+                user_id: data.user_id,
+                atas_nama: data.atas_nama,
+                bank_id: data.bank_id,
+                province_id: data.province_id,
+                city_id: data.city_id,
+                alamat: data.alamat,
+                kodepos: data.kodepos,
+                nohp: data.nohp,
+                berat: data.berat,
+                ongkir: data.ongkir.service,
+                description: data.ongkir.description,
+                cost_value: data.ongkir.cost_value,
+                cost_etd: data.ongkir.cost_etd,
+                cost_note: data.ongkir.cost_note,
+                kurir: data.kurir,
+                note: data.note,
+                status: data.status,
+                transfer_evidence: data.file_transfer == null ? '' : data.file_transfer.path,
             }),
-            categories: '',
+            formOngkir: new Form({
+                city_id: data.city_id,
+                berat: data.berat,
+                kurir: data.kurir
+            }),
+            preview: data.file_transfer == null ? null : imgUrl+'/storage/'+data.file_transfer.path,
+            users: @JSON($users),
+            banks: @JSON($banks),
+            provinces: @JSON($provinces),
+            cities: @JSON($cities),
+            product_variants: @JSON($product_variants),
+            costs: @JSON($costs),
         },
         created(){
 
         },
         mounted(){
-            this.getCategory();
+            // $('#0').select2({
+            //     placeholder: "Pilih Produk",
+            // });
+            $('#user_id').select2({
+                placeholder: "Pilih Pengguna",
+            });
+            $('#province_id').select2({
+                placeholder: "Pilih Provinsi",
+            });
+            $('#city_id').select2({
+                placeholder: "Pilih Kota",
+            });
+            $('#bank_id').select2({
+                placeholder: "Pilih Bank",
+            });
+            $('#kurir').select2({
+                placeholder: "Pilih Kurir",
+            });
+            $('#ongkir').select2({
+                placeholder: "Pilih Ongkos Kirim",
+            });
+            $('#status').select2({
+                placeholder: "Pilih Status",
+            });
         },
         methods: {
-            storeData(){
+
+            countOngkir(){
+                Swal.fire({
+                    title: 'Menghitung Ongkir...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                this.formOngkir.post("{{ route('ongkir.count') }}")
+                    .then(response => {
+                        if(response.data.success == true){
+                            this.costs = response.data.data[0].costs;
+                            Swal.close()
+                        }else{
+                            Swal.fire(
+                                'Gagal',
+                                response.data.message,
+                                'error'
+                            )
+                        }
+                    })
+                    .catch(e => {
+                        Swal.fire(
+                            'Gagal',
+                            "Operasi Gagal",
+                            'error'
+                        )
+                        e.response.status != 422 ? console.log(e) : '';
+                    })
+            },
+            changeOngkir(){
+                this.form.ongkir = $('#ongkir').val();
+                let $arr = this.costs.find(x => x.service === this.form.ongkir);
+                this.form.description = $arr.description;
+                this.form.cost_value = $arr.cost[0].value;
+                this.form.cost_etd = $arr.cost[0].etd;
+                this.form.cost_note = $arr.cost[0].note;
+            },
+            changeStatus(){
+                this.form.status = $('#status').val();
+            },
+            changeBerat(){
+                this.formOngkir.berat = $('#berat').val();
+            },
+            selectProduct(index){
+                this.form.product[index].product_id = $('#'+index).val();
+            },
+            selectUser(){
+                this.form.user_id = $('#user_id').val();
+            },
+            selectBank(){
+                this.form.bank_id = $('#bank_id').val();
+            },
+            selectKurir(){
+                this.form.kurir = $('#kurir').val();
+                this.formOngkir.kurir = $('#kurir').val();
+            },
+            selectCity(){
+                this.form.city_id = $('#city_id').val();
+                this.formOngkir.city_id = $('#city_id').val();
+            },
+            selectProvince(){
+                this.form.province_id = $('#province_id').val();
+                this.cities = [];
+                url = "{{ route('user.getcity', ':id') }}".replace(':id', this.form.province_id)
+                axios.get(url)
+                    .then(response => {
+                        this.cities = response.data.data
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        Swal.close()
+                    })
+            },
+            addItem(index) {
+                this.form.product.push({
+                    product_id: '',
+                    amount: 1
+                });
+                setTimeout(function() {
+                    let newid = (parseInt(index)+1);
+                    // let initSelect2 = $('#'+newid).select2({
+                    //     placeholder: "Pilih Produk",
+                    // });
+                    // $('#'+newid).on('select2:select', function (e) {
+                    //   this.selectProduct(e)
+                    // });
+                }, 1);
+            },
+            removeItem(index) {
+                this.form.product.splice(index, 1);
+            },
+            updateData(){
                 Swal.fire({
                     title: 'Loading Data...',
                     allowEscapeKey: false,
@@ -162,29 +426,46 @@ Edit Produk
                         Swal.showLoading();
                     }
                 });
-            },
-            categoryTrigger(){
-
+                this.form.product = JSON.stringify(this.form.product);
+                this.form.post("{{ route('transaction.update') }}")
+                    .then(response => {
+                        this.form.product = JSON.parse(this.form.product);
+                        if(response.data.success == true){
+                            Swal.fire(
+                                'Sukses',
+                                response.data.message,
+                                'success'
+                            ).then((result) => {
+                                // window.location.href = "{{ route('transaction.pending.index') }}"
+                                window.history.go(-1);
+                                return false;
+                            })
+                        }else{
+                            Swal.fire(
+                                'Gagal',
+                                response.data.message,
+                                'error'
+                            )
+                        }
+                    })
+                    .catch(e => {
+                        this.form.product = JSON.parse(this.form.product);
+                        Swal.fire(
+                            'Gagal',
+                            "Operasi Gagal",
+                            'error'
+                        )
+                        e.response.status != 422 ? console.log(e) : '';
+                    })
             },
             imageTrigger(e){
-                for (let file of e.target.files) {
-                    try {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(file); // Not sure if this will work in this context.
-                        this.form.files.push(file);
-                    } catch {}
-                }
-            },
-            getCategory(){
-                axios.get("{{ route('product.category.getdata') }}")
-                    .then(response => {
-                        this.categories = response.data.data
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        Swal.close()
-                    })
-            }
+              const file = e.target.files[0];
+              let gambar = e.target.files;
+              this.preview = URL.createObjectURL(file);
+              if(gambar.length){
+                this.form.transfer_evidence = gambar[0];
+              }
+          },
         },
     });
     </script>

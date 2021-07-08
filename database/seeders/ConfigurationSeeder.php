@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Configuration;
+use App\Models\File;
 use Illuminate\Database\Seeder;
 
 class ConfigurationSeeder extends Seeder
@@ -14,10 +15,13 @@ class ConfigurationSeeder extends Seeder
      */
     public function run()
     {
+        $file = File::create([
+            'path' => 'uploads/images/configurations/logo.png'
+        ]);
         Configuration::insert([
             [
                 'name' => 'ui',
-                'content' => '{"web_name":"Marketplace"}'
+                'content' => '{"app_name":"Marketplace","logo":"'.$file->uuid.'"}'
             ],
             [
                 'name' => 'pusher',
@@ -25,7 +29,7 @@ class ConfigurationSeeder extends Seeder
             ],
             [
                 'name' => 'smtp',
-                'content' => '{"email":"no-reply@fatabarfarm.id","sender_name":"Fatabar Farm","host":"smtp.mailtrap.io","port":"2525","username":"2091896772d8f4","password":"05145bee73face","encryption":"tls"}'
+                'content' => '{"email":"admin@fatabarfarm.com","sender_name":"Fatabar Farm Support","host":"mail.fatabarfarm.com","port":"587","username":"admin@fatabar.com","password":"lancar_jaya","encryption":"tls"}'
             ],
             [
                 'name' => 'rajaongkir',

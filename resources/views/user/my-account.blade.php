@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Profil
+Profil
 @endsection
 @section('content')
         <!--====== App Content ======-->

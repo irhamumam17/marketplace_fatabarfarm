@@ -17,7 +17,7 @@ class CreateBanksTable extends Migration
             $table->id();
             $table->uuid('uuid')->index();
             $table->string("name");
-            $table->text("account number");            
+            $table->text("account_number");            
             $table->timestamps();
         });
     }

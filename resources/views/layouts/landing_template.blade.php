@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="{{ asset('landing_assets/images/favicon.png')}}" rel="shortcut icon">
-    <title>@yield('title')</title>
+    <link href="{{ asset('storage/'.$data['ui']->content->logo->path)}}" rel="shortcut icon">
+    <title>{{  $data['ui']->content->app_name }} | @yield('title')</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
@@ -40,13 +40,13 @@
 
         </div>
         <!--====== End - App Content ======-->
-        @include('layouts.landing_footer')        
+        @include('layouts.landing_footer')
     </div>
     <!--====== End - Main App ======-->
 
 
     <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
-    <script>
+    {{-- <script>
         window.ga = function() {
             ga.q.push(arguments)
         };
@@ -55,7 +55,7 @@
         ga('create', 'UA-XXXXX-Y', 'auto');
         ga('send', 'pageview')
     </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script> --}}
 
     <!--====== Vendor Js ======-->
     <script src="{{ asset('landing_assets/js/vendor.js') }}"></script>
@@ -71,6 +71,7 @@
 
     <!--====== App ======-->
     <script src="{{ asset('landing_assets/js/app.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('js')
     <!--====== Noscript ======-->
     <noscript>

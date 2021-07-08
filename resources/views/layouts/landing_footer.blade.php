@@ -9,14 +9,14 @@
                                 <span class="outer-footer__content-title">Contact Us</span>
                                 <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
 
-                                    <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
+                                    <span>{!! $data['info']->detail->alamat !!}</span></div>
                                 <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
 
-                                    <span>(+0) 900 901 904</span></div>
-                                <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
+                                    <span>{{ $data['info']->detail->kontak }}</span></div>
+                                {{-- <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
 
-                                    <span>contact@domain.com</span></div>
-                                <div class="outer-footer__social">
+                                    <span>contact@domain.com</span></div> --}}
+                                {{-- <div class="outer-footer__social">
                                     <ul>
                                         <li>
 
@@ -34,7 +34,7 @@
 
                                             <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -47,10 +47,10 @@
                                             <ul>
                                                 <li>
 
-                                                    <a href="cart.html">Keranjang</a></li>
+                                                    <a href="{{ route('user.cart') }}">Keranjang</a></li>
                                                 <li>
 
-                                                    <a href="dashboard.html">Akun</a></li>
+                                                    <a href="{{ route('user.profil') }}">Akun</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -63,13 +63,10 @@
                                             <ul>
                                                 <li>
 
-                                                    <a href="about.html">Tentang</a></li>
+                                                    <a href="{{ route('user.history') }}">Tentang</a></li>
                                                 <li>
 
-                                                    <a href="contact.html">Hubungi Kami</a></li>
-                                                <li>
-
-                                                    <a href="index.html">Lokasi</a></li>
+                                                    <a href="{{ route('user.location') }}">Lokasi</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -88,7 +85,7 @@
 
                                     <span>Copyright © 2021</span>
 
-                                    <a href="index.html">MIUDev</a>
+                                    <a href="https://irhamumam17.github.io/">MIUDev</a>
 
                                     <span>All Right Reserved</span></div>
                             </div>
@@ -98,4 +95,4 @@
             </div>
         </footer>
 
-        <!--====== Modal Section ======-->
+        <!--====== Modal Section ======

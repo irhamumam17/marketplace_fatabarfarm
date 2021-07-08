@@ -99,43 +99,87 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.pending.index') }}" class="nav-link">
+                <a href="{{ route('transaction.pending.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Pending</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.konfirmasi.index') }}" class="nav-link">
+                <a href="{{ route('transaction.konfirmasi.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Konfirmasi Ongkir</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.packing.index') }}" class="nav-link">
+                <a href="{{ route('transaction.packing.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Packing</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.dikirim.index') }}" class="nav-link">
+                <a href="{{ route('transaction.dikirim.index') }}" class="nav-link">
                   <i class="fas fa-spinner nav-icon"></i>
                   <p>Dikirim</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.success.index') }}" class="nav-link">
+                <a href="{{ route('transaction.success.index') }}" class="nav-link">
                   <i class="fas fa-check-circle nav-icon"></i>
                   <p>Sukses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('product.cancel.index') }}" class="nav-link">
+                <a href="{{ route('transaction.cancel.index') }}" class="nav-link">
                   <i class="fas fa-ban nav-icon"></i>
                   <p>Batal</p>
                 </a>
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('blog.index') }}" class="nav-link btnMenu">
+              <i class="nav-icon fas fa-newspaper"></i>
+              <p>
+                Berita
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('program.index') }}" class="nav-link btnMenu">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Program
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link btnMenu">
+              <i class="nav-icon fas fa-info"></i>
+              <p>
+                Informasi
+                <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('info.sejarah') }}" class="nav-link">
+                <i class="fas fa-history nav-icon"></i>
+                <p>Sejarah</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('info.visi_misi') }}" class="nav-link">
+                <i class="fas fa-bullseye nav-icon"></i>
+                <p>Visi Misi</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('info.lokasi') }}" class="nav-link">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <p>Lokasi</p>
+              </a>
+            </li>
+          </ul>
           <li class="nav-item">
             <a href="#" class="nav-link btnMenu">
               <i class="nav-icon fas fa-cog"></i>
@@ -145,6 +189,12 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('bank.index') }}" class="nav-link">
+                <i class="fas fa-piggy-bank nav-icon"></i>
+                <p>Bank</p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="{{ route('config.ui') }}" class="nav-link">
                 <i class="fas fa-quidditch nav-icon"></i>
@@ -158,48 +208,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{{ route('config.smtp') }}" class="nav-link">
                 <i class="fas fa-at nav-icon"></i>
                 <p>Email</p>
               </a>
             </li>
           </ul>
-          <li class="nav-item">
-            <a href="#" class="nav-link btnMenu">
-              <i class="nav-icon fas fa-info"></i>
-              <p>
-                Informasi
-                <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="fas fa-history nav-icon"></i>
-                <p>Sejarah</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="fas fa-bullseye nav-icon"></i>
-                <p>Visi Misi</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="fas fa-map-marker-alt nav-icon"></i>
-                <p>Lokasi</p>
-              </a>
-            </li>
-          </ul>
-          <li class="nav-item">
-            <a href="#" class="nav-link btnMenu">
-              <i class="nav-icon fas fa-newspaper"></i>
-              <p>
-                Berita
-              </p>
-            </a>
-          </li>
           </li>
         </ul>
       </nav>

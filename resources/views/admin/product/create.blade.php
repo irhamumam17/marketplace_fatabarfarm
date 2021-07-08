@@ -63,19 +63,6 @@ Tambah Produk
                         @endif
                     </div>
                 </div>
-                <div class="form-row">
-                    <label class="col-lg-2" for="Profil">Gambar</label>
-                    <div class="form-group col-md-8">
-                        <div class="input-group">
-                            <input ref="file" accept="image/*"  type="file" name="image"
-                                placeholder="Tambah Gambar" class="form-control " required>
-                        </div>
-                        @if ($errors->has('image'))
-                            <span class="text-danger">{{ $errors->first('image') }}</span>
-                        @endif
-                    </div>
-                </div>
-
             </div>
             <div class="modal-footer">
                 <a href="{{route('product.index')}}"><button type="button" class="btn btn-light">Batal</button></a>
@@ -88,29 +75,7 @@ Tambah Produk
 
     @endsection
     @section('js')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"
-    integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA=="
-    crossorigin="anonymous"></script> --}}
     <script src="{{ asset('template_assets/vendor/select2/js/select2.full.min.js')}}"></script>
-    {{-- <script src="{{asset('tinymce/tinymce.min.js')}}"></script> --}}
-    {{-- <script>
-        tinymce.init({
-                selector: "textarea",theme: "silver",width: 680,height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-                    "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
-                    "table contextmenu directionality emoticons paste textcolor responsivefilemanager code"
-            ],
-
-            toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-            toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
-            image_advtab: true ,
-
-            external_filemanager_path:"/filemanager/",
-            filemanager_title:"Responsive Filemanager" ,
-            external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
-            });
-    </script> --}}
     <script>
         var imgUrl = "{{ asset('') }}";
     let app = new Vue({
@@ -122,7 +87,6 @@ Tambah Produk
                 name: '',
                 category_id: '',
                 detail: '',
-                image: [],
             }),
             categories: '',
         },
@@ -145,15 +109,6 @@ Tambah Produk
             },
             categoryTrigger(){
 
-            },
-            imageTrigger(e){
-                for (let file of e.target.files) {
-                    try {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(file); // Not sure if this will work in this context.
-                        this.form.files.push(file);
-                    } catch {}
-                }
             },
             getCategory(){
                 axios.get("{{ route('product.category.getdata') }}")

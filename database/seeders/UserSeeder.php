@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $file = File::create([
-            'path' => 'assets/images/user/default.png',
+            'path' => 'uploads/images/users/default.png',
         ]);
 
         $user = new User();

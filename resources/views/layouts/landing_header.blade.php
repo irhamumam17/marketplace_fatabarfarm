@@ -2,7 +2,7 @@
         <header class="header--style-1 header--box-shadow">
 
             <!--====== Nav 1 ======-->
-            <nav class="primary-nav primary-nav-wrapper--border">
+            <nav class="primary-nav primary-nav-wrapper--border" style="background-color: #b1bc32;">
                 <div class="container">
 
                     <!--====== Primary Nav ======-->
@@ -10,10 +10,10 @@
 
                         <!--====== Main Logo ======-->
 
-                        <a class="main-logo" href="index.html">
+                        <a class="main-logo" href="{{ route('user.home') }}">
 
-                            {{-- <img src="{{asset('landing_assets/images/logo/logo-1.png')}}" alt=""> --}}
-                            <h2 class="section__heading u-c-secondary u-s-m-b-12">Fatabar Farm</h2>
+                            <img src="{{ asset('storage/'.$data['ui']->content->logo->path) }}" alt="" style="max-height: 50px;">
+                            {{-- <h2 class="section__heading u-c-secondary u-s-m-b-12">Fatabar Farm</h2> --}}
                         </a>
                         <!--====== End - Main Logo ======-->
 
@@ -32,7 +32,7 @@
                         <!--====== Dropdown Main plugin ======-->
                         <div class="menu-init" id="navigation">
 
-                            <button class="btn btn--icon toggle-button toggle-button--secondary fas fa-cogs" type="button"></button>
+                            <button class="btn btn--icon toggle-button toggle-button--secondary fas fa-cog" type="button"></button>
 
                             <!--====== Menu ======-->
                             <div class="ah-lg-mode">
@@ -95,7 +95,7 @@
 
 
             <!--====== Nav 2 ======-->
-            <nav class="secondary-nav-wrapper">
+            <nav class="secondary-nav-wrapper" style="background-color: mediumseagreen">
                 <div class="container">
 
                     <!--====== Secondary Nav ======-->
@@ -103,7 +103,7 @@
                         <!--====== Dropdown Main plugin ======-->
                         <div class="menu-init" id="navigation2">
 
-                            <button class="btn btn--icon toggle-button toggle-button--secondary fas fa-cog" type="button"></button>
+                            <button class="btn btn--icon toggle-button toggle-button--secondary fas fa-bars" type="button"></button>
 
                             <!--====== Menu ======-->
                             <div class="ah-lg-mode">
@@ -143,7 +143,7 @@
 
                                         <span class="js-menu-toggle"></span>
                                         <ul style="width:170px">
-                                            @foreach($productCategory as $p)
+                                            @foreach($data['productCategory'] as $p)
                                             <li>
                                                 <a href="{{ route('user.category',$p->id) }}">{{ $p->name }}</a>
                                             </li>
@@ -161,16 +161,12 @@
                                             <!--====== Dropdown ======-->
 
                                             <span class="js-menu-toggle"></span>
-                                            <ul style="width:170px">
+                                            <ul>
+                                                @foreach($data['program'] as $p)
                                                 <li>
-                                                    <a href="{{ route('user.history') }}">Edufarm</a>
+                                                    <a href="{{ route('user.program.detail',$p->id) }}">{{ $p->detail->title }}</a>
                                                 </li>
-                                                <li>
-                                                    <a href="{{ route('user.visi_misi') }}">Sedekah Jum'at</a>
-                                                </li>
-                                                <li>
-
-                                                    <a href="{{ route('user.location') }}">Hafiz Qur'an</a></li>
+                                                @endforeach
                                             </ul>
                                             <!--====== End - Dropdown ======-->
                                         </li>

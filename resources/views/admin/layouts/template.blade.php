@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marketplace | @yield('title')</title>
-
+  <title>{{  $data['ui']->content->app_name }} | @yield('title')</title>
+  <link href="{{ asset('storage/'.$data['ui']->content->logo->path)}}" rel="shortcut icon">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="{{asset('template_assets/vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('template_assets/vendor/select2/css/select2.min.css')}}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{asset('template_assets/vendor/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- JQVMap -->
@@ -25,8 +26,8 @@
   <link rel="stylesheet" href="{{asset('template_assets/vendor/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('template_assets/vendor/summernote/summernote-bs4.min.css')}}">
+  <link href="{{ asset('template_assets/vendor/lightbox2/css/lightbox.css')}}" rel="stylesheet" />
   {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
-  <link rel="stylesheet" href="{{ asset('css/vendor/lightbox2/css/lightbox.css') }}">
   @yield('css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -90,6 +91,7 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('template_assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ asset('template_assets/vendor/select2/js/select2.full.min.js')}}"></script>
 <!-- ChartJS -->
 <script src="{{asset('template_assets/vendor/chart.js/Chart.min.js')}}"></script>
 <!-- Sparkline -->
@@ -108,9 +110,12 @@
 <script src="{{asset('template_assets/vendor/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('template_assets/vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<script src="{{asset('template_assets/vendor/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<script src="{{ asset('template_assets/vendor/lightbox2/js/lightbox.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('template_assets/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
+<script src="{{ asset('template_assets/vendor/summernote/summernote-bs4.min.js') }}"></script>
 <script src="{{asset('template_assets/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 {{-- <script src="{{asset('template_assets/js/pages/dashboard.js')}}"></script> --}}
@@ -120,6 +125,12 @@
     $("a[href='"+url+"']").addClass('active');
     $("a[href='"+url+"']").parent().closest('.nav-item').parent().closest('.nav-item').addClass('menu-open');
     $("a[href='"+url+"']").parent().closest('.nav-item').parent().closest('.nav-item').find('.btnMenu').addClass('active');
+</script>
+<script>
+    lightbox.option({
+      'resizeDuration': 400,
+      'wrapAround': true
+    })
 </script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 </body>

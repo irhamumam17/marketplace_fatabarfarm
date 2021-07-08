@@ -14,9 +14,16 @@ class BankController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.bank');
     }
-
+    public function get_data(){
+        $data = Bank::all();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => 'Sukses Mendapatkan Data Bank'
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -35,7 +42,24 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string',
+            'account_number' => 'required|string'
+        ]);
+        try {
+            $bank = Bank::create($request->only('name','account_number'));
+            return response()->json([
+                'success' => true,
+                'data' => $bank,
+                'message' => 'Bank Berhasil Dimasukkan.'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -67,9 +91,26 @@ class BankController extends Controller
      * @param  \App\Models\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bank $bank)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string'
+        ]);
+        $bank = Bank::find($id);
+        try {
+            $bank->update($request->only('name','account_number'));
+            return response()->json([
+                'success' => true,
+                'data' => null,
+                'message' => 'Bank Berhasil Diubah.'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -78,8 +119,21 @@ class BankController extends Controller
      * @param  \App\Models\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bank $bank)
+    public function destroy($id)
     {
-        //
+        try {
+            Bank::find($id)->delete();
+            return response()->json([
+                'success' => true,
+                'data' => null,
+                'message' => 'Bank Berhasil Dihapus'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

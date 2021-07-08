@@ -1,6 +1,6 @@
 @extends('layouts.landing_template')
 @section('title')
-Fatabar Farm | Keranjang
+Keranjang
 @endsection
 @section('content')
         <!--====== App Content ======-->
@@ -64,16 +64,16 @@ Fatabar Farm | Keranjang
                                                     <div class="table-p__box">
                                                         <div class="table-p__img-wrap">
 
-                                                            <img class="u-img-fluid" src="{{ asset('landing_assets/images/product/electronic/product3.jpg')}}" alt=""></div>
+                                                            <img class="u-img-fluid" style="max-height: 120px;" src="{{ asset('storage/'.$cart->product_variant->file->path)}}" alt=""></div>
                                                         <div class="table-p__info">
 
                                                             <span class="table-p__name">
 
-                                                                <a href="product-detail.html">{{$cart->product_variant->product->name}}</a></span>
+                                                                <a href="{{ route('user.product_detail',$cart->product_variant->uuid) }}">{{$cart->product_variant->product->name}}</a></span>
 
                                                             <span class="table-p__category">
 
-                                                                <a href="shop-side-version-2.html">{{$cart->product_variant->product->category->name}}</a></span>
+                                                                <a href="{{route('user.category',$cart->product_variant->product->category->id)}}">{{$cart->product_variant->product->category->name}}</a></span>
                                                             <ul class="table-p__variant-list">
                                                                 @foreach($cart->product_variant->detail as $d)
                                                                 <li>
@@ -86,7 +86,9 @@ Fatabar Farm | Keranjang
                                                 </td>
                                                 <td>
 
-                                                    <span class="table-p__price">{{"Rp " . number_format($cart->amount*$cart->product_variant->price,2,',','.')}}</span></td>
+                                                    {{-- <span class="table-p__price">{{"Rp " . number_format($cart->amount*$cart->product_variant->price,2,',','.')}}</span></td> --}}
+                                                    <span class="table-p__price">{{"Rp " . number_format($cart->product_variant->price,2,',','.')}}</span></td>
+
                                                 <td>
                                                     <div class="table-p__input-counter-wrap">
 
@@ -95,7 +97,7 @@ Fatabar Farm | Keranjang
 
                                                             <span class="input-counter__minus fas fa-minus"></span>
 
-                                                            <input class="input-counter__text input-counter--text-primary-style" type="text" value="1" data-min="1" data-max="1000">
+                                                            <input id="amount{{$cart->product_variant->uuid}}" class="input-counter__text input-counter--text-primary-style" type="text" value="{{$cart->amount}}" data-min="1" data-max="{{$cart->product_variant->stock}}">
 
                                                             <span class="input-counter__plus fas fa-plus"></span></div>
                                                         <!--====== End - Input Counter ======-->
@@ -135,7 +137,7 @@ Fatabar Farm | Keranjang
 
                                             <span>CLEAR CART</span></a>
 
-                                        <a class="route-box__link" href="{{route('user.cart')}}"><i class="fas fa-sync"></i>
+                                        <a class="route-box__link" id="updateCart"><i class="fas fa-sync"></i>
 
                                             <span>UPDATE CART</span></a></div>
                                 </div>
@@ -156,90 +158,44 @@ Fatabar Farm | Keranjang
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-                                <form class="f-cart">
+                                <div class="f-cart">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                                            <div class="f-cart__pad-box">
-                                                <h1 class="gl-h1">ESTIMATE SHIPPING AND TAXES</h1>
-
-                                                <span class="gl-text u-s-m-b-30">Enter your destination to get a shipping estimate.</span>
-                                                <div class="u-s-m-b-30">
-
-                                                    <!--====== Select Box ======-->
-
-                                                    <label class="gl-label" for="shipping-country">COUNTRY *</label><select class="select-box select-box--primary-style" id="shipping-country">
-                                                        <option selected value="">Choose Country</option>
-                                                        <option value="uae">United Arab Emirate (UAE)</option>
-                                                        <option value="uk">United Kingdom (UK)</option>
-                                                        <option value="us">United States (US)</option>
-                                                    </select>
-                                                    <!--====== End - Select Box ======-->
-                                                </div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <!--====== Select Box ======-->
-
-                                                    <label class="gl-label" for="shipping-state">STATE/PROVINCE *</label><select class="select-box select-box--primary-style" id="shipping-state">
-                                                        <option selected value="">Choose State/Province</option>
-                                                        <option value="al">Alabama</option>
-                                                        <option value="al">Alaska</option>
-                                                        <option value="ny">New York</option>
-                                                    </select>
-                                                    <!--====== End - Select Box ======-->
-                                                </div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <label class="gl-label" for="shipping-zip">ZIP/POSTAL CODE *</label>
-
-                                                    <input class="input-text input-text--primary-style" type="text" id="shipping-zip" placeholder="Zip/Postal Code"></div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <a class="f-cart__ship-link btn--e-transparent-brand-b-2" href="cart.html">CALCULATE SHIPPING</a></div>
-
-                                                <span class="gl-text">Note: There are some countries where free shipping is available otherwise our flat rate charges or country delivery charges will be apply.</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                                            <div class="f-cart__pad-box">
-                                                <h1 class="gl-h1">NOTE</h1>
-
-                                                <span class="gl-text u-s-m-b-30">Add Special Note About Your Product</span>
-                                                <div>
-
-                                                    <label for="f-cart-note"></label><textarea class="text-area text-area--primary-style" id="f-cart-note"></textarea></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                        <div class="col-lg-5 col-md-6 u-s-m-b-30">
                                             <div class="f-cart__pad-box">
                                                 <div class="u-s-m-b-30">
                                                     <table class="f-cart__table">
                                                         <tbody>
+                                                            @php
+                                                            $total = 0;
+                                                            @endphp
+                                                            @foreach($carts as $cart)
                                                             <tr>
-                                                                <td>SHIPPING</td>
-                                                                <td>$4.00</td>
+                                                                <td>
+                                                                    {{$cart->product_variant->product->name}}
+                                                                    (@foreach($cart->product_variant->detail as $d)
+                                                                    {{$d->value.' '}}
+                                                                    @endforeach) : {{$cart->amount}}
+                                                                </td>
+                                                                <td>{{"Rp " . number_format($cart->amount*$cart->product_variant->price,2,',','.')}}</td>
                                                             </tr>
+                                                            @php
+                                                            $total += ((int)$cart->amount*(int)$cart->product_variant->price);
+                                                            @endphp
+                                                            @endforeach
                                                             <tr>
-                                                                <td>TAX</td>
-                                                                <td>$0.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>SUBTOTAL</td>
-                                                                <td>$379.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>GRAND TOTAL</td>
-                                                                <td>$379.00</td>
+                                                                <td>Harga TOTAL</td>
+                                                                <td>{{"Rp " . number_format($total,2,',','.')}}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <div>
 
-                                                    <button class="btn btn--e-brand-b-2" type="submit"> PROCEED TO CHECKOUT</button></div>
+                                                    <button class="btn btn--e-brand-b-2" id="prosesCheckout"> PROSES KE PEMBAYARAN</button></div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -250,4 +206,81 @@ Fatabar Farm | Keranjang
         </div>
         <!--====== End - App Content ======-->
 
+@endsection
+@section('js')
+<script>
+    $(document).ready(function(){
+        $('#prosesCheckout').on('click',function(){
+            window.location.href = "{{route('user.checkout')}}";
+        });
+        var request;
+        let data = @json($carts);
+        console.log(data);
+        $('#updateCart').on('click',function(event){
+            data.forEach((val, i) => {
+                data[i].amount = $('#amount'+val.product_varian_id).val();
+            });
+            Swal.fire({
+                title: 'Loading Data...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            // Abort any pending request
+            if (request) {
+                request.abort();
+            }
+            // setup some local variables
+            var $form = $(this);
+
+            // Let's select and cache all the fields
+            var $inputs = $form.find("input,button");
+
+            // Let's disable the inputs for the duration of the Ajax request.
+            // Note: we disable elements AFTER the form data has been serialized.
+            // Disabled form elements will not be serialized.
+            $inputs.prop("disabled", true);
+            let amount = "1";
+            $.ajax({
+                url: "{{ route('user.update_cart_product') }}",
+                type:"POST",
+                data:{
+                  new_cart: data,
+                  "_token": "{{ csrf_token() }}",
+                },
+                success:function(response){
+                  if(response.success == true) {
+                    Swal.fire(
+                        'Sukses',
+                        response.message,
+                        'success'
+                    ).then((result) => {
+                        window.location.href = "{{ route('user.cart') }}"
+                    })
+                  }else{
+                    Swal.fire(
+                        'Gagal',
+                        response.message,
+                        'error'
+                        )
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    Swal.fire(
+                        'Gagal',
+                        textStatus,
+                        'error'
+                        )
+                    console("Status: " + textStatus);
+                    console("Error: " + errorThrown); 
+                },
+                always:function(){
+                    $inputs.prop("disabled", false);
+                }
+               });
+        });
+    });
+</script>
 @endsection
